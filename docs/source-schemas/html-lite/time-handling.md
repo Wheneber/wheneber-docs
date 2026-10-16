@@ -74,6 +74,15 @@ Behavior:
 - If `startTime` is a visible range like `10:30 AM - 11:30 AM`, HtmlLite derives both `StartTime` and `EndTime`.
 - If no end can be derived, `EndTime` still defaults to `StartTime + 1 hour`.
 
+For the v3 HTML calendar parser, recognizable yearless split dates use the current
+year when their month/day is today or later in the mapped event timezone, and next
+year otherwise. This compares dates, not event clock times. Explicit years remain
+unchanged, and invalid selected dates (including Feb 29 in a non-leap year) are
+skipped rather than replaced. This fallback can promote genuinely past events;
+prefer authoritative publisher years. See
+[v3 yearless HTML semantics](../v3/html-detail-enrichment.md#yearless-html-calendar-dates)
+for details and the unchanged freshness policy.
+
 ## Validation Tips
 
 - verify submit response validation.sampleEvents have parseable datetime values

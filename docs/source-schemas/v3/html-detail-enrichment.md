@@ -90,6 +90,30 @@ next date/time schedule must not create new occurrences.
 
 ## Validation and freshness
 
+### Yearless HTML calendar dates
+
+Prefer an authoritative year from the publisher when available. For a recognizable
+month/day with no year (for example `Oct 15`, `Thu, Oct 15`, `15 Oct`, or `10/15`),
+the HTML parser compares that month/day with **today's calendar date in the mapped
+`timeZone`** (`America/Los_Angeles` for Pacific sources; an omitted timezone defaults
+to UTC). Today or a later month/day uses the current local year; an earlier
+month/day uses the next local year. The event's clock time does not affect this
+choice, so a show earlier today remains in this year. Optional weekday text does
+not establish a year.
+
+Explicit-year dates, including past dates, and full absolute timestamps retain
+their supplied year. Missing dates and time-only date fields cannot borrow today's
+date. A selected year in which the date is invalid (such as yearless Feb 29 in a
+non-leap year) produces a parse failure and skips that occurrence, following the
+existing invalid-date policy. No date is clamped or moved to a later leap year.
+An explicitly mapped yearless end that cannot be parsed also skips the occurrence
+rather than silently substituting a default end.
+
+This is a simple fallback, not sequence inference: a genuinely past yearless event
+can be promoted into next year. It applies independently to split HTML start/end
+calendar dates, not JSON or ICS parsing. The normal 24-hour freshness filter below
+is unchanged.
+
 Root `validation.minEventsPerFetch` is enforced by stored-schema tests and runtime
 ingestion. It counts successfully parsed occurrences with non-empty title and
 location **before** the freshness filter, within configured request/event limits.
