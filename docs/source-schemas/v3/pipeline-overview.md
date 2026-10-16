@@ -195,3 +195,27 @@ EventON public calendars can select the closed `eventon` adapter in
 `pipeline.calendar.adapter`. See [EventON source adapter](eventon-adapter.md)
 for required explicit month windows, origin restrictions, authoritative
 occurrence schedules, and whole-window completeness validation.
+
+Journey Theater can select the closed `journey` adapter for dynamic
+publisher-linked Google calendar discovery. See [Journey adapter](journey-adapter.md)
+for best-effort public-show classification, official ICS recurrence semantics,
+and the existing `TBD` missing-venue convention. This requires the corresponding
+backend deployment; it is not supported by older schema executors.
+
+### Adapter execution boundary
+
+The backend resolves adapter names through an explicit dependency-injected
+registry. The currently registered names are `eventon` and `journey`; unknown
+names and duplicate registrations fail closed. Each adapter validates its own
+typed options and owns its complete bootstrap, discovery, fallback, and parsing
+lifecycle. Generic HTML, JSON, RSS, and ICS schemas continue through the normal
+executor and do not receive adapter-specific behavior.
+
+Both runtime ingestion and schema test-fetch use the same prepared adapter and
+bounded fetch service. The service applies restricted-header filtering, response
+size and timeout limits, safe host/path-only diagnostics, adapter-supplied URL
+constraints, and the named adapter HTTP client with redirects and cookies
+disabled. EventON and Journey retain distinct URL scopes; only the EventON
+public nonce is forwarded as the explicit nonce header. Test-fetch success does
+not certify full source coverage; review adapter warnings and the source-specific
+validation guidance before authorizing ingestion.

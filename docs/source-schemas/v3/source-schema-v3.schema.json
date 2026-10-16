@@ -363,6 +363,31 @@
       ]
     },
     "sourceAdapter": {
+      "oneOf": [
+        { "$ref": "#/$defs/eventonAdapter" },
+        { "$ref": "#/$defs/journeyAdapter" }
+      ]
+    },
+    "journeyAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "journey" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["futureMonths", "maxRequests", "maxFeeds", "maxEvents"],
+          "properties": {
+            "futureMonths": { "type": "integer", "minimum": 1, "maximum": 24, "description": "Rolling window from current instant through this many months ahead, plus the shared 24-hour freshness lookback. Official calendar timestamps are authoritative." },
+            "maxRequests": { "type": "integer", "minimum": 4, "maximum": 50, "description": "Whole-run GET budget including bootstrap, reserved fallback, catalogue pages, optional descriptions and discovered feeds. Feed overflow fails, not truncates." },
+            "maxFeeds": { "type": "integer", "minimum": 1, "maximum": 20 },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 5000 }
+          }
+        }
+      }
+    },
+    "eventonAdapter": {
       "type": "object",
       "additionalProperties": false,
       "required": ["name", "options"],
