@@ -188,3 +188,10 @@ For exact `calendarFieldUrl` constraints and `baseUrl` behavior, see [Event Inpu
 
 - [v3 JSON Schema](source-schema-v3.schema.json)
 - [v3 examples](pipeline-examples.md)
+
+## Optional source adapter
+
+EventON public calendars can select the closed `eventon` adapter in
+`pipeline.calendar.adapter`. See [EventON source adapter](eventon-adapter.md)
+for required explicit month windows, origin restrictions, authoritative
+occurrence schedules, and whole-window completeness validation.

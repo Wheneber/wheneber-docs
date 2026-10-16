@@ -23,6 +23,36 @@
       "if": {
         "properties": {
           "pipeline": {
+            "properties": { "calendar": { "required": ["adapter"] } },
+            "required": ["calendar"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "validation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": { "minEventsPerFetch": { "type": "integer", "minimum": 0 } }
+          },
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "type": { "const": "None" },
+                  "parser": { "maxProperties": 0 }
+                },
+                "not": { "required": ["limits"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
             "properties": {
               "calendar": {
                 "properties": { "type": { "const": "Ics" } },
@@ -55,6 +85,7 @@
             "properties": {
               "calendar": {
                 "properties": { "type": { "const": "Html" } },
+                "not": { "required": ["adapter"] },
                 "required": ["type"]
               }
             },
@@ -302,9 +333,65 @@
         "fetch": {
           "$ref": "#/$defs/fetchConfig"
         },
+        "adapter": {
+          "$ref": "#/$defs/sourceAdapter",
+          "description": "Optional closed, code-owned adapter selection; absent preserves normal parser execution."
+        },
         "parser": {
           "type": "object",
           "description": "Parser-specific options for calendar stage."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["adapter"] },
+          "then": {
+            "properties": {
+              "type": { "const": "Html" },
+              "parser": { "type": "object", "maxProperties": 0 },
+              "fetch": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "method": { "const": "GET" },
+                  "requestHeaders": { "type": "object", "additionalProperties": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sourceAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "eventon" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["futureMonths", "timeZone", "allowedOrigins", "maxRequests", "maxEvents"],
+          "properties": {
+            "futureMonths": { "type": "integer", "minimum": 1, "maximum": 24, "description": "Explicit rolling calendar-month count, INCLUDING current source-local month. No default." },
+            "timeZone": { "type": "string", "minLength": 1, "description": "System-supported timezone, preferably IANA; used for calendar month boundaries, never to reinterpret occurrence Unix timestamps." },
+            "allowedOrigins": {
+              "type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^https://[^/?#@]+/?$" },
+              "description": "HTTPS origin allowlist; every adapter URL must ALSO have exactly the feed origin (including port). Redirects are disabled."
+            },
+            "maxRequests": { "type": "integer", "minimum": 2, "maximum": 25, "description": "Must be at least futureMonths + 1 (bootstrap GET plus monthly POSTs); enforced by runtime." },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 5000, "description": "Whole-window unique occurrence cap; exceeding this or the server cap fails, never truncates." },
+            "venue": {
+              "type": "object", "additionalProperties": false, "required": ["name", "address", "evidenceUrl"],
+              "description": "Optional, manually verified source-wide venue fact, only for single-venue calendars. Not an inferred placeholder or description fallback. Evidence URL must be same-origin HTTPS.",
+              "properties": {
+                "name": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "address": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "evidenceUrl": { "type": "string", "minLength": 1, "maxLength": 500 }
+              }
+            }
+          }
         }
       }
     },
