@@ -1,57 +1,37 @@
 # v3 Event Input Constraints
 
-This page documents current event-stage input constraints for contributor-facing v3 schemas.
+The backend HTML/JSON detail executor supports:
 
-## Input modes
+- `none`: no detail stage.
+- `calendarFieldUrl`: read the URL from the named calendar field.
+- `fixedUrl`: substitute calendar fields into `urlTemplate`.
 
-Supported values for `pipeline.event.input.mode`:
-
-- `none`
-- `calendarFieldUrl`
-- `fixedUrl`
-
-## Current phase-2 constraint
-
-For event types `Html` and `Json`, current phase-2 scaffolding accepts only:
+For example, a listing link `/events/123` can be made absolute without a backend
+URL-resolution change:
 
 ```json
 "input": {
-  "mode": "calendarFieldUrl",
-  "field": "eventUrl",
-  "baseUrl": "https://example.org"
+  "mode": "fixedUrl",
+  "urlTemplate": "https://example.org{{eventUrl}}"
 }
 ```
 
-If `field` is not `eventUrl`, test-fetch fails with an error equivalent to:
-
-- `phase 2 scaffolding currently supports only pipeline.event.input.field = eventUrl.`
-
-`baseUrl` is optional and applies only to `calendarFieldUrl` mode.
-
-Behavior:
-
-- relative `eventUrl` values are resolved against `input.baseUrl` when present
-- when `baseUrl` is omitted, relative links fall back to feed-based resolution behavior
-- if a list payload URL is absolute but points to an API host, `baseUrl` can rebase host/path to the public content host
-- if URL normalization fails, detail fetch is skipped for that event
-
-## How to satisfy this constraint
-
-1. Ensure calendar mappings include `eventUrl`.
-2. Use `field: "eventUrl"` in event input.
-3. Add `baseUrl` when list links are relative or host-mismatched.
-4. Validate with `/api/source-schemas/test-fetch`.
-
-Example calendar mapping:
+`calendarFieldUrl` requires an already absolute HTTP(S) URL in its field:
 
 ```json
-"mappings": {
-  "title": "h2",
-  "startTime": ".date",
-  "eventUrl": "a@href"
-}
+"input": { "mode": "calendarFieldUrl", "field": "eventUrl" }
 ```
 
-## FixedUrl mode note
+This backend executor does not resolve relative links using `baseUrl` or the feed
+URL. Do not assume older contributor test-fetch/scaffolding behavior applies to
+stored-schema tests and worker execution.
 
-`fixedUrl` remains part of the v3 contract. For contributor workflows, validate behavior in your target environment before depending on it.
+Both modes apply `limits.sameHostOnly` (default `true`) against the feed host
+before detail requests. Non-HTTP(S) URLs are rejected. `maxRequestsPerRun` bounds
+HTML fetch attempts, including failures. These checks do not implement a new
+redirect-host policy; redirects retain the existing HTTP client behavior.
+
+The same effective calendar headers, restricted-header exclusions, timeout, and
+response-size bounds are used for listing and detail requests in stored-schema
+tests and runtime workers. See [HTML detail extraction](html-detail-enrichment.md)
+for occurrence scoping, transforms, fallback, identity, and minimum-count semantics.

@@ -72,9 +72,12 @@ Calendar stage fetch options may include:
 - `fetch.requestHeaders` for non-restricted custom headers
 - `fetch.pagination` for page, offset, or cursor traversal
 
-For Html calendar parsers, calendar parser options can also include `multiDateExpansion`.
-This allows one calendar card to emit multiple occurrence events from a date-list field.
-When combined with `detailPage.occurrenceSelector`, expansion determines event count and detail occurrence matching only refines emitted events.
+For the backend v3 Html executor, detail occurrence expansion belongs in
+`pipeline.event.parser`: set `expansion: "fanOut"`, `occurrenceSelector`, `mappings`,
+and optional `fieldTransforms`. Relative mappings read the selected occurrence;
+absolute XPath reads document-level metadata. The obsolete calendar `detailPage`
+block is not the execution path. See [HTML detail extraction](html-detail-enrichment.md)
+for identity, missing-schedule, minimum-count, and freshness semantics.
 
 For Ics calendar parsers, calendar parser options can include `fieldTransforms` for deterministic per-field cleanup after RFC 5545 parsing and before event-stage processing.
 This does not enable `mappings` for Ics.

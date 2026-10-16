@@ -266,7 +266,7 @@
               "event": {
                 "properties": {
                   "input": {
-                    "required": ["url"]
+                    "required": ["urlTemplate"]
                   }
                 }
               }
@@ -312,6 +312,12 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["type", "input", "parser"],
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "Html" } } },
+          "then": { "properties": { "parser": { "$ref": "#/$defs/htmlEventParser" } } }
+        }
+      ],
       "properties": {
         "type": {
           "type": "string",
@@ -329,6 +335,40 @@
         }
       }
     },
+    "htmlEventParser": {
+      "type": "object",
+      "description": "HTML detail mappings are occurrence-relative; absolute XPath reads document metadata.",
+      "properties": {
+        "expansion": { "type": "string", "enum": ["single", "fanOut"] },
+        "occurrenceSelector": { "type": "string", "minLength": 1 },
+        "mappings": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "fieldTransforms": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {
+                "type": { "enum": ["trim", "collapseWhitespace", "regexReplace", "replaceLiteral"] },
+                "value": { "type": "string" },
+                "replacement": { "type": "string" },
+                "ignoreCase": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "expansion": { "const": "fanOut" } }, "required": ["expansion"] },
+          "then": { "required": ["occurrenceSelector"] }
+        }
+      ]
+    },
     "eventInput": {
       "type": "object",
       "additionalProperties": false,
@@ -342,9 +382,10 @@
           "type": "string",
           "minLength": 1
         },
-        "url": {
+        "urlTemplate": {
           "type": "string",
-          "pattern": "^https?://"
+          "pattern": "^https?://",
+          "description": "Absolute HTTP(S) template; substitutes calendar fields such as {{eventUrl}}."
         }
       }
     },
@@ -420,7 +461,8 @@
       "properties": {
         "minEventsPerFetch": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "description": "Minimum parsed occurrences with title/location before freshness filtering, not minimum upcoming events. Enforced in stored-schema tests and runtime."
         },
         "maxEventsPerFetch": {
           "type": "integer",
