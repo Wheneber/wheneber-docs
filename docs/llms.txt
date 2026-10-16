@@ -18,6 +18,7 @@
 - [RSS](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/rss.md)
 - [JsonApi](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/json-api.md)
 - [Pipeline V3 Overview](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/pipeline-overview.md)
+- [TicketWeb WordPress Adapter](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/ticketweb-adapter.md)
 - [Pipeline V3 Examples](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/pipeline-examples.md)
 - [Pipeline V3 Migration Guide](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/migration-guide.md)
 - [Pipeline V3 Type Pair Reference](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/type-pair-reference.md)

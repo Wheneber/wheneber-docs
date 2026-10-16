@@ -365,8 +365,42 @@
     "sourceAdapter": {
       "oneOf": [
         { "$ref": "#/$defs/eventonAdapter" },
+        { "$ref": "#/$defs/ticketwebAdapter" },
         { "$ref": "#/$defs/journeyAdapter" }
       ]
+    },
+    "ticketwebAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "ticketweb" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["timeZone", "allowedOrigins"],
+          "properties": {
+            "futureMonths": { "type": "integer", "minimum": 1, "maximum": 24, "default": 12, "description": "Calendar months INCLUDING current source-local month, not a fixed-day duration." },
+            "timeZone": { "type": "string", "minLength": 1, "maxLength": 500, "description": "System-supported timezone, preferably IANA. Required operator evidence/assumption for publisher-local wall times." },
+            "allowedOrigins": {
+              "type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^https://[^/?#@]+/?$" },
+              "description": "Every requested URL must also match the feed's exact origin. Redirects/cookies disabled; no credentials or query on bootstrap/admin-ajax."
+            },
+            "maxRequests": { "type": "integer", "minimum": 2, "maximum": 25, "description": "Defaults to futureMonths + 1. Must cover bootstrap GET and one POST per month; runtime enforces this relation." },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 5000, "default": 1000, "description": "Whole-window occurrence cap; overflow fails, never truncates. Monthly raw-row count is also bounded." },
+            "venue": {
+              "type": "object", "additionalProperties": false, "required": ["name", "address", "evidenceUrl"],
+              "description": "Optional manually verified single-venue fact. Only fills missing venue fields, never replaces a different published venue. Evidence URL must be same-origin HTTPS without query.",
+              "properties": {
+                "name": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "address": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "evidenceUrl": { "type": "string", "minLength": 1, "maxLength": 500 }
+              }
+            }
+          }
+        }
+      }
     },
     "journeyAdapter": {
       "type": "object",

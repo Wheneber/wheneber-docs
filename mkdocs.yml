@@ -37,6 +37,7 @@ nav:
       - Submission API And Validation: source-schemas/submission-api-and-validation.md
       - Source Schema JSON Schema Files: source-schemas/json-schema-files.md
       - Pipeline V3 Overview (Draft): source-schemas/v3/pipeline-overview.md
+      - TicketWeb WordPress Adapter: source-schemas/v3/ticketweb-adapter.md
       - Pipeline V3 Examples (Draft): source-schemas/v3/pipeline-examples.md
       - Pipeline V3 Migration Guide: source-schemas/v3/migration-guide.md
       - Pipeline V3 Type Pair Reference: source-schemas/v3/type-pair-reference.md
