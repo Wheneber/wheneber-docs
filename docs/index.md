@@ -75,6 +75,7 @@ Contract reminder for ICS onboarding:
 | Shared | [Choose A Source Type](source-schemas/choose-source-type.md) | Decision guide for picking the right parser and schema contract |
 | Shared | [Submission API And Validation](source-schemas/submission-api-and-validation.md) | Common payload envelope, test-fetch flow, and contributor-safe endpoints |
 | Shared | [Source Schema JSON Schema Files](source-schemas/json-schema-files.md) | Machine-readable schemaDefinition contracts for all supported source types |
+| Adapter | [Tockify Public Calendar](source-schemas/v3/tockify-adapter.md) | Paginated public inventory, rich detail joins, epoch schedules and bounded execution |
 | Shared | [Validation Checklist](source-schemas/html-lite/validation-checklist.md) | Field-completeness and handoff readiness gates |
 | Shared | [Troubleshooting](source-schemas/html-lite/troubleshooting.md) | Recovery order for zero-parse and validation failures |
 | Ics | [Guide](source-schemas/ics.md) | When to use ICS, minimal schemaDefinition, optional fieldTransforms, and validation notes |

@@ -191,6 +191,11 @@ For exact `calendarFieldUrl` constraints and `baseUrl` behavior, see [Event Inpu
 
 ## Optional source adapter
 
+Tockify public calendars can select the closed `tockify` adapter for complete offset
+inventory and required rich public-detail joins. See [Tockify adapter](tockify-adapter.md)
+for rolling horizon/caps, epoch and recurrence identity semantics, canonical URLs,
+images, evidence-backed venue facts and publisher-access boundaries.
+
 TicketWeb Event Discovery WordPress calendars can select the closed `ticketweb`
 adapter for public bootstrap/config discovery, monthly form POSTs, and JSON/popup
 joins. See [TicketWeb adapter](ticketweb-adapter.md) for the default 12-calendar-month
@@ -211,7 +216,7 @@ backend deployment; it is not supported by older schema executors.
 ### Adapter execution boundary
 
 The backend resolves adapter names through an explicit dependency-injected
-registry. The currently registered names are `eventon`, `journey` and `ticketweb`; unknown
+registry. The currently registered names are `eventon`, `journey`, `ticketweb` and `tockify`; unknown
 names and duplicate registrations fail closed. Each adapter validates its own
 typed options and owns its complete bootstrap, discovery, fallback, and parsing
 lifecycle. Generic HTML, JSON, RSS, and ICS schemas continue through the normal
