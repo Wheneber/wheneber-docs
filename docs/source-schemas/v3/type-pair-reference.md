@@ -9,7 +9,8 @@ v3 accepts only specific `pipeline.calendar.type -> pipeline.event.type` combina
 - `Ics -> Json`
 - `Html -> Html`
 - `Html -> Json`
-- `Html -> None` **only** with the allowlisted `eventon` calendar adapter
+- `Html -> None` **only** with an allowlisted code-owned calendar adapter
+  (`eventon`, `ticketweb`, `ticketmaster`, `tockify`, or `journey`)
 - `Json -> None`
 - `Json -> Html`
 - `Json -> Json`
@@ -21,9 +22,8 @@ Any pair outside this list fails schema admission.
 
 ## Important implications
 
-- `Html -> None` is rejected for normal parser execution. The
-  [EventON adapter](eventon-adapter.md) requires this pair because the adapter
-  performs the complete calendar projection; its calendar/event parsers must be
+- `Html -> None` is rejected for normal parser execution. Code-owned complete
+  projection adapters require this pair; their calendar/event parsers must be
   empty and no separate detail stage is permitted.
 - `Ics -> None` and `Rss -> None` remain valid when calendar stage already contains needed fields.
 - `Json -> None` is valid when calendar payload already includes full event fields.

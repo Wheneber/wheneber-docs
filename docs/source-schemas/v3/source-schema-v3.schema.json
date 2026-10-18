@@ -366,9 +366,51 @@
       "oneOf": [
         { "$ref": "#/$defs/eventonAdapter" },
         { "$ref": "#/$defs/ticketwebAdapter" },
+        { "$ref": "#/$defs/ticketmasterAdapter" },
         { "$ref": "#/$defs/tockifyAdapter" },
         { "$ref": "#/$defs/journeyAdapter" }
       ]
+    },
+    "ticketmasterAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "ticketmaster" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["venueIds", "maxRequests", "maxEvents"],
+          "properties": {
+            "venueIds": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 10,
+              "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^[0-9]{1,20}$" },
+              "description": "One or more publisher venue identifiers. Adapter code owns the fixed Ticketmaster venue-search endpoint; no source-specific venue IDs are embedded."
+            },
+            "pageSize": {
+              "type": "integer",
+              "const": 20,
+              "default": 20,
+              "description": "The publisher endpoint's fixed page size. Only 20 is currently supported."
+            },
+            "maxRequests": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 1000,
+              "description": "Whole-run request budget for all venue inventory pages and every scheduled-event detail classification fetch. Exhaustion fails without returning partial events."
+            },
+            "maxEvents": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5000,
+              "description": "Maximum combined venue inventory and unique output events. Overflow fails; inventory pages are never truncated."
+            }
+          }
+        }
+      }
     },
     "tockifyAdapter": {
       "type": "object",
