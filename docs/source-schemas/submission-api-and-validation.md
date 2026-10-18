@@ -102,6 +102,16 @@ JsonApi event-link clarification:
 
 Metadata fallback/date policies are applied consistently in preview and ingestion. `eventStartNotBeforeDate` compares the event's UTC start date (the source parser's normalized instant), `eventFallbackUrl` fills a missing source URL, and the two `customAttributes` fallbacks only fill their corresponding missing fields. Only `calendarStrategyOverride: "Auto"` is supported. Unknown top-level and metadata keys are rejected rather than ignored.
 
+Metadata is optional: omitted or JSON `null` metadata means no policies. Legacy stored null,
+empty, or whitespace metadata is also read as no policies, without changing the stored source.
+Admin detail and contributor resource responses represent absent metadata as `{}`. Optional
+null/empty policy values do not supply fallbacks. A provided metadata object must satisfy the
+same field types and validation rules in preview, ingestion, and resource reads. Malformed
+stored JSON, wrong shapes/types, and invalid policy values produce an explicit safe
+`Invalid source metadata` diagnostic rather than silently disabling policies. Resource reads
+return HTTP 500 Problem Details titled `InvalidSourceMetadata` for this stored-data error.
+These rules do not relax event title, schedule, or location requirements.
+
 Metadata notes:
 
 - `eventStartNotBeforeDate` is a policy filter for both `test-fetch` and runtime ingestion.
