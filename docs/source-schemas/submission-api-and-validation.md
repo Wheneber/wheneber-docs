@@ -2,11 +2,17 @@
 
 This page describes the shared contributor workflow for every source type.
 
-Use these endpoints:
+> **Pre-production temporary access:** anonymous preview, submission, submission retrieval, admin-ingestion review/listing/mutation/run, and source reactivation are intentionally allowed. This is an explicit pre-production risk acceptance, not a production security design. Do not deploy with this access model. The production-blocking checklist is tracked in the repository root `TODOs.md`.
 
-- `GET /api/source-schemas/templates`
-- `POST /api/source-schemas/test-fetch`
-- `POST /api/source-schemas/community-submissions`
+- `POST /api/source-schemas/test-fetch` — non-persisting public-feed preview.
+- `POST /api/source-schemas/community-submissions` — independently revalidates and stores a Draft.
+- `GET /api/source-schemas/community-submissions/{sourceSchemaId}` — signed-in users can retrieve only their own submission; anonymous requests can retrieve any anonymous submission (shared pre-production semantics).
+
+Preview and submission do not require an access token. Anonymous submissions are attributed truthfully in storage as `SubmittedBy = "anonymous"`; no user or tenant identity is fabricated. Signed-in submissions continue to store Entra tenant/object attribution and retain owner-only retrieval. Anonymous submissions are intentionally shared in this pre-production environment. Anonymous idempotency is scoped by the server-observed remote IP, key, and request fingerprint: an exact retry from the same network scope replays the same submission, while different payloads or remote IPs receive distinct deterministic IDs. The IP is used only as an idempotency namespace and is not persisted as submitter attribution. Signed-in submissions retain same-key/different-payload `409` behavior. All submissions require an `Idempotency-Key` header (8–128 ASCII letters, digits, hyphens, or underscores).
+
+Successful submission returns `201 Created`, a `Location` pointing to the retrieval resource, the persisted source details, and validation results. The persisted status is always `Draft`; creation never approves or activates a source. During pre-production, the controller-wide AdminOnly policy is disabled. Review/detail, listing, schema/feed URL updates, ingestion validation/runs, and reactivation are public. A reviewer must inspect the source details before calling reactivation; this is a process requirement only and is not enforced by an authorization or approval workflow. A few existing maintenance actions retain their narrower action-level AdminOnly policies. Before production, restore Entra authentication, AdminOnly access for all admin routes including review and approval, and verified contributor attribution/ownership.
+
+Contributor fetches require a public HTTPS endpoint. Private, loopback, link-local, and metadata IP ranges are blocked; DNS results are checked at connection time; redirects are not followed; follow-on requests must remain on the feed origin; and requests are bounded by a 15-second per-request timeout, 45-second total validation timeout, 2 MB response limit, 100 total outbound requests, a 100-event preview cap, and a 2 MiB HTTP request body. The 100-request budget supports feeds with many detail-page lookups while keeping validation bounded. Authentication, request headers, and credential-bearing URLs are not accepted. A rate limit of five requests per minute applies per signed-in object ID (or remote IP for anonymous calls), so anonymous callers behind the same IP share a bucket. This limit is not a production abuse control. A candidate must yield at least one upcoming event with a usable title, schedule, and location before a Draft is stored.
 
 ## v3 Pipeline Contract (Current)
 
@@ -59,10 +65,12 @@ Both `test-fetch` and `community-submissions` accept the same payload structure.
 **Field requirements:**
 
 - `type` must be one of `Ics`, `Rss`, `JsonApi`, `HtmlLite`
-- `feedUrl` is required and must be a valid absolute URL
-- **`schemaDefinition` must be sent as a JSON string, not a nested object** — wrap your JSON in quotes: `"{}"` or `"{\\"key\\":\\"value\\"}"`
+- `feedUrl` is required and must be an absolute public HTTPS URL without credentials or fragments
+- **`schemaDefinition` must be sent as a JSON string, not a nested object** — wrap the v3 JSON body in quotes and escape its inner quotes.
 - `schemaDefinition` must use v3 shape with `schemaVersion: 3` and `pipeline`
 - `schemaDefinition` can be up to 200000 characters
+- `type` must match `pipeline.calendar.type` (`JsonApi` corresponds to calendar type `Json`)
+- only `calendarStrategyOverride: "Auto"` is accepted
 - `url` and `eventMapping` are not valid top-level submission fields
 - `name` and `description` are required for submission; `metadata` is recommended
 - **`name` must identify the organization and event collection in plain language** — use `[Organization] Events` or `[Organization] [Collection]` (for example, "Battle Ground Parks & Recreation Events" or "Portland Art Museum Calendar"); do not include source type identifiers such as "ICS," "RSS," "HtmlLite," "JsonApi," or the word "Feed" — those are platform internals invisible to users
@@ -91,6 +99,8 @@ JsonApi event-link clarification:
 | `eventFallbackUrl` | string (absolute URL) | `"https://example.org/events"` used only when an event has no URL |
 | `customAttributes.defaultLocation` | string | default event `location` fallback |
 | `customAttributes.defaultVenueAddress` | string | default event `venueAddress` fallback |
+
+Metadata fallback/date policies are applied consistently in preview and ingestion. `eventStartNotBeforeDate` compares the event's UTC start date (the source parser's normalized instant), `eventFallbackUrl` fills a missing source URL, and the two `customAttributes` fallbacks only fill their corresponding missing fields. Only `calendarStrategyOverride: "Auto"` is supported. Unknown top-level and metadata keys are rejected rather than ignored.
 
 Metadata notes:
 
@@ -232,7 +242,7 @@ Practical ICS check:
 }
 ```
 
-**Why:** The API only recognizes specific metadata fields: `location`, `region`, `category`, `language`, `contactEmail`, `estimatedEventCount`, `eventStartNotBeforeDate`, `eventFallbackUrl`, and `customAttributes`. Unknown keys are ignored or rejected. Use `location` to combine city/state info; it will be geocoded automatically.
+**Why:** The API only recognizes specific metadata fields: `location`, `region`, `category`, `language`, `contactEmail`, `estimatedEventCount`, `eventStartNotBeforeDate`, `eventFallbackUrl`, and `customAttributes`. Unknown keys are rejected. Descriptive fields are retained on the source schema; fallback and date policies are applied by preview and ingestion.
 
 Allowed `customAttributes` keys for fallback behavior:
 
@@ -245,7 +255,7 @@ These two keys are independent and intentionally do not cross-fill each other.
 
 ### ❌ Mistake 3: Submitting before testing
 
-Always test first with `/api/source-schemas/test-fetch`. If test returns `eventCount: 0`, debug before submitting. A submission with zero events will be rejected or marked for admin review.
+Always test first with `/api/source-schemas/test-fetch`. If test returns `totalEventsParsed: 0`, debug before submitting. A submission that fails fetch or schema validation returns `422` and does not persist a draft.
 
 When using metadata fallback/date policies, verify all of the following in test-fetch first:
 
@@ -313,14 +323,7 @@ For the Source Creation Specialist and other hosted validation workflows, use th
 
 ### 1. Load A Starter Template
 
-Use `GET /api/source-schemas/templates` when you want a known-good starting point.
-
-The templates endpoint currently publishes starter schemas for:
-- `Ics`
-- `Rss`
-- several `JsonApi` patterns
-
-If the templates endpoint does not include the exact type or shape you need, start from the type guide on this site.
+Use the type guides and v3 examples linked above as the known-good starting points. There is no templates API endpoint.
 
 ### 2. Test Fetch Before Submitting
 
@@ -389,7 +392,8 @@ $body = @{
 } | ConvertTo-Json -Depth 5
 
 Invoke-RestMethod -Uri "https://dev.api.wheneber.com/api/source-schemas/test-fetch" `
-    -Method Post -Body $body -ContentType "application/json" -TimeoutSec 90
+    -Method Post -Headers @{ Authorization = "Bearer <signed-in-access-token>" } `
+    -Body $body -ContentType "application/json" -TimeoutSec 90
 ```
 
 ### Optional: Enable HTML Detail Enrichment In schemaDefinition
@@ -443,7 +447,10 @@ $body = @{
 } | ConvertTo-Json -Depth 5
 
 Invoke-RestMethod -Uri "https://dev.api.wheneber.com/api/source-schemas/community-submissions" `
-    -Method Post -Body $body -ContentType "application/json" -TimeoutSec 90
+    -Method Post -Headers @{
+        Authorization = "Bearer <signed-in-access-token>"
+        "Idempotency-Key" = "example-submission-0001"
+    } -Body $body -ContentType "application/json" -TimeoutSec 90
 ```
 
 ## Shared Validation Rules
@@ -455,10 +462,10 @@ The backend enforces these common rules for every source type:
 - `mappings` cannot exceed 300 entries when present
 - `requestWorkflow.steps` cannot exceed 25 entries when present
 - `requestHeaders` cannot exceed 50 entries when present
-- outbound URLs must be `http` or `https`
-- localhost, private-network, and restricted hosts are blocked
-- event/detail links are required to be fully qualified `http`/`https` URLs when provided to downstream fetch stages
-- relative event links are acceptable only when they can be resolved against `feedUrl`; unresolved or non-URL values are rejected as invalid links
+- outbound URLs must be public `https`
+- localhost, private-network, link-local, cloud-metadata, and restricted hosts are blocked after DNS resolution as well as before connecting
+- redirects are disabled and pagination/detail/auth-token requests are bounded; contributor schemas must not configure authentication or request headers
+- event/detail fetch links must remain on the submitted feed origin
 
 Field precedence expectation for enrichment:
 

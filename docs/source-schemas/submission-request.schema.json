@@ -1,35 +1,45 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Source Schema Submission Request",
-  "description": "Valid payload for both POST /api/source-schemas/test-fetch and POST /api/source-schemas/community-submissions",
+  "description": "Valid payload for POST /api/source-schemas/test-fetch and POST /api/source-schemas/community-submissions. Both routes intentionally allow anonymous access in pre-production only; see submission-api-and-validation.md and TODOs.md for production-blocking authentication requirements.",
   "type": "object",
   "required": ["type", "feedUrl", "schemaDefinition", "name", "description"],
   "properties": {
     "name": {
       "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
       "description": "Human-readable name of the calendar source",
       "examples": ["La Center Community Calendar", "Seattle Parks & Recreation Events"]
     },
     "description": {
       "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
       "description": "What this source publishes; 1-2 sentences",
       "examples": ["Public events from La Center, WA", "Official city events and announcements"]
     },
     "type": {
       "type": "string",
       "enum": ["Ics", "Rss", "JsonApi", "HtmlLite"],
-      "description": "The source type detected from the feed"
+      "description": "The source type; it must match pipeline.calendar.type in the v3 schemaDefinition."
     },
     "feedUrl": {
       "type": "string",
       "format": "uri",
-      "description": "Absolute URL of the calendar feed (HTTP or HTTPS)",
+      "maxLength": 2048,
+      "pattern": "^https://",
+      "description": "Public HTTPS URL of the calendar feed. Credentials, fragments, private hosts, and credential-like query parameters are rejected. Community submissions cannot use authenticated feeds.",
       "examples": ["https://example.org/calendar.ics", "https://example.org/events/feed.rss"]
     },
     "schemaDefinition": {
       "type": "string",
-      "description": "JSON schema definition as a STRING (not an object). For Ics, typically '{}' or validation-only. For other types, includes parsing rules like eventArrayPath and mappings.",
-      "examples": ["{}", "{\"extractionRules\":{\"title\":\"title\",\"startTime\":\"pubDate\"}}"]
+      "maxLength": 200000,
+      "description": "V3 schema definition as a JSON string (not a nested object); requires schemaVersion 3 and pipeline.",
+      "examples": [
+        "{\"schemaVersion\":3,\"pipeline\":{\"calendar\":{\"type\":\"Ics\",\"parser\":{}},\"event\":{\"type\":\"None\",\"input\":{\"mode\":\"none\"},\"parser\":{}}}}",
+        "{\"schemaVersion\":3,\"pipeline\":{\"calendar\":{\"type\":\"Rss\",\"parser\":{\"mappings\":{\"title\":\"title\",\"startTime\":\"pubDate\",\"eventUrl\":\"link\"}}},\"event\":{\"type\":\"None\",\"input\":{\"mode\":\"none\"},\"parser\":{}}}}"
+      ]
     },
     "metadata": {
       "type": "object",
@@ -68,12 +78,13 @@
         "eventStartNotBeforeDate": {
           "type": "string",
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "description": "Only include events whose start date is on or after this date (YYYY-MM-DD)"
+          "description": "Only include events whose UTC start date is on or after this date (YYYY-MM-DD)"
         },
         "eventFallbackUrl": {
           "type": "string",
           "format": "uri",
-          "description": "Absolute URL used when an event has no eventUrl"
+          "pattern": "^https://",
+          "description": "Absolute public HTTPS URL without query or credentials, used when an event has no eventUrl"
         },
         "customAttributes": {
           "type": "object",
@@ -95,8 +106,8 @@
     },
     "calendarStrategyOverride": {
       "type": "string",
-      "enum": ["Auto", "Exclusive", "Merge"],
-      "description": "Optional override for how events are calendared (default: Auto)"
+      "enum": ["Auto"],
+      "description": "Only Auto is currently supported (the default)."
     }
   },
   "additionalProperties": false,
@@ -106,7 +117,7 @@
       "description": "Public ICS feed from La Center, WA",
       "type": "Ics",
       "feedUrl": "https://calendar.google.com/calendar/ical/lacentercalendar%40gmail.com/public/basic.ics",
-      "schemaDefinition": "{}",
+      "schemaDefinition": "{\"schemaVersion\":3,\"pipeline\":{\"calendar\":{\"type\":\"Ics\",\"parser\":{}},\"event\":{\"type\":\"None\",\"input\":{\"mode\":\"none\"},\"parser\":{}}}}",
       "metadata": {
         "location": "La Center, WA",
         "region": "WA",
@@ -123,7 +134,7 @@
       "description": "Community events from Example Org",
       "type": "Rss",
       "feedUrl": "https://example.org/events/feed.rss",
-      "schemaDefinition": "{\"extractionRules\":{\"title\":\"title\",\"startTime\":\"pubDate\"},\"validation\":{\"requiredFields\":[\"title\",\"startTime\"]}}",
+      "schemaDefinition": "{\"schemaVersion\":3,\"pipeline\":{\"calendar\":{\"type\":\"Rss\",\"parser\":{\"mappings\":{\"title\":\"title\",\"startTime\":\"pubDate\",\"eventUrl\":\"link\"}}},\"event\":{\"type\":\"None\",\"input\":{\"mode\":\"none\"},\"parser\":{}}}}",
       "metadata": {
         "location": "Example City",
         "region": "WA",
