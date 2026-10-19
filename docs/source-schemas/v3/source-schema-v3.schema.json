@@ -344,6 +344,22 @@
       },
       "allOf": [
         {
+          "if": {
+            "anyOf": [
+              { "properties": { "type": { "not": { "const": "Json" } } }, "required": ["type"] },
+              { "required": ["adapter"] }
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch": {
+                "properties": { "method": { "const": "GET" } },
+                "not": { "required": ["jsonBody"] }
+              }
+            }
+          }
+        },
+        {
           "if": { "required": ["adapter"] },
           "then": {
             "properties": {
@@ -640,6 +656,10 @@
           "type": "string",
           "enum": ["GET", "POST"]
         },
+        "jsonBody": {
+          "type": "object",
+          "description": "Literal JSON object for generic Json calendar POST only. Runtime limits compact UTF-8 JSON to 16384 bytes, depth 8 (object root is depth 1), and 1024 nodes including containers/nulls. No interpolation or dynamic date discovery. Never include credentials."
+        },
         "authentication": {
           "$ref": "#/$defs/authenticationConfig"
         },
@@ -656,7 +676,16 @@
         "pagination": {
           "type": "object"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["jsonBody"] },
+          "then": {
+            "required": ["method"],
+            "properties": { "method": { "const": "POST" } }
+          }
+        }
+      ]
     },
     "authenticationConfig": {
       "type": "object",

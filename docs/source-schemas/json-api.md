@@ -58,6 +58,54 @@ Add these only when needed:
 - `pipeline.calendar.fetch.pagination` for page/offset/cursor APIs
 - `pipeline.calendar.fetch.authentication` for bearer/api-key/basic auth
 - `pipeline.calendar.fetch.requestHeaders` for required headers
+
+### Anonymous JSON POST calendars
+
+Generic v3 `Json` calendar stages support `fetch.method: "GET"` (the default)
+or `"POST"`. Only POST may include `fetch.jsonBody`, a **JSON object**, not a
+JSON-encoded string. The runtime sends UTF-8 `application/json; charset=utf-8`
+when a body is present. POST without a body sends an empty POST; GET never sends
+a body. Other methods, null/scalar/array bodies, and POST/body on non-JSON
+calendars or code-owned adapters are rejected, not silently converted to GET.
+
+```json
+{
+  "method": "POST",
+  "jsonBody": {
+    "categoryID": 0,
+    "includePast": false,
+    "filters": [],
+    "search": ""
+  },
+  "pagination": {
+    "strategy": "Page",
+    "pageParamName": "page",
+    "totalPagesPath": "$.pages"
+  }
+}
+```
+
+This is a `pipeline.calendar.fetch` fragment. The same method and literal body
+are used for the initial request and each query-parameter pagination request;
+page/offset/cursor values are **not** inserted into the body. Each attempt
+creates a fresh request and content. POST endpoints must be read-only event
+queries safe to repeat: workers may retry a failed run. No automatic POST retry
+or write-operation semantics are introduced.
+
+Bodies are bounded to 16384 bytes of compact UTF-8 JSON, depth 8 (root object at
+depth 1), and 1024 nodes including containers and nulls. Size/depth/node limits
+are runtime/admission checks, not fully expressible in JSON Schema.
+Values are literal; date templates, bootstrap discovery, and body batching are
+not supported. Do not submit permanently fixed dates as rolling coverage.
+
+Community preview and submission accept safe anonymous JSON bodies but still
+reject request headers, authentication, nested credential-like keys, and unsafe
+embedded URLs. HTTPS/SSRF restrictions, no redirects/cookies, request/time and
+response-size budgets remain unchanged. Body values never appear in fetch logs.
+Embedded literal-IP and loopback URLs are conservatively rejected; body URLs
+are data and are never dereferenced by the pipeline.
+Event-detail enrichment and authentication-token bootstrap retain their existing
+GET transport and policies; calendar bodies are never forwarded to them.
 - `pipeline.calendar.parser.responseTransforms` for shaping split date/time fields
 
 ## Literal Defaults In Mappings

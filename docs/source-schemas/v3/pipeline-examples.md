@@ -320,3 +320,42 @@ Composition rule:
 1. `multiDateExpansion` determines how many events are emitted from each card.
 2. `detailPage.occurrenceSelector` refines each emitted event.
 3. Detail occurrence matching does not change event count.
+## Generic JSON POST calendar
+
+Anonymous read-only JSON queries can use a typed body. This complete example
+uses query pagination; the literal body remains identical on every page.
+See [JSON API request policy](../json-api.md#anonymous-json-post-calendars) for
+limits and contributor restrictions. This does not discover or batch dates.
+
+```json
+{
+  "schemaVersion": 3,
+  "pipeline": {
+    "calendar": {
+      "type": "Json",
+      "fetch": {
+        "method": "POST",
+        "jsonBody": { "categoryID": 0, "includePast": false, "filters": [] },
+        "pagination": {
+          "strategy": "Page",
+          "pageParamName": "page",
+          "totalPagesPath": "$.pages"
+        }
+      },
+      "parser": {
+        "eventArrayPath": "$.events[*]",
+        "mappings": {
+          "id": "$.id",
+          "title": "$.title",
+          "startTime": "$.start",
+          "location": "$.venue",
+          "description": "$.description",
+          "imageUrl": "$.image",
+          "eventUrl": "$.url"
+        }
+      }
+    },
+    "event": { "type": "None", "input": { "mode": "none" }, "parser": {} }
+  }
+}
+```
