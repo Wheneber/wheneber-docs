@@ -7,6 +7,17 @@ Source Schema v3 introduces a clean two-stage schemaDefinition contract:
 
 This model replaces implicit parser branching with explicit stage contracts.
 
+All parsers and adapters follow the [shared schedule policy](../schedule-policy.md):
+verified start without end is one hour with a disclosed estimate; a verified
+date without clocks is all-day in the source timezone. Publisher ends win.
+
+For the audited Clark County publisher, the
+[Clark Saffire adapter](clark-saffire-adapter.md) owns HTML date discovery,
+five-date service POST batches and authoritative daily schedules. These
+operations are not generic pipeline DSL features. It is the only adapter
+currently allowlisted for community submissions; incomplete schedules fail
+without partial results.
+
 ## Goals
 
 - Support flexible combinations for unexpected sources.

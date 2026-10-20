@@ -2,6 +2,11 @@
 
 Use `JsonApi` when event data is delivered from a JSON endpoint.
 
+All ingestion follows the [shared schedule policy](schedule-policy.md):
+verified timed starts without ends receive one elapsed hour and a final
+description disclaimer; verified dates without clocks are all-day in the
+source timezone. Published ends take precedence. No event date is invented.
+
 ## Current Contract
 
 JsonApi source submissions now use the v3 pipeline contract only.

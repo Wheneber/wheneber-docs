@@ -4,6 +4,12 @@ Use `Ics` when the source publishes a valid iCalendar feed. This is usually the 
 
 For a machine-readable authoring contract, use the contributor-facing [Ics JSON Schema](ics.schema.json).
 
+All ingestion follows the [shared schedule policy](schedule-policy.md). A timed
+DTSTART without DTEND/DURATION receives one elapsed hour with a final description
+disclaimer. DATE DTSTART without an end is all-day to the next source-local
+midnight (DST-aware). Published DTEND remains exclusive and DURATION wins over
+the default. Missing/invalid DTSTART is a failure, never publication/current time.
+
 ## ⚠️ ONLY Valid Format For ICS
 
 The `Ics` source schema submission to Wheneber **has exactly this structure and no other**:
@@ -85,8 +91,9 @@ The parser reads standard RFC 5545 VEVENT fields automatically. No `mappings` co
 | ICS VEVENT Field | Maps To | Notes |
 |---|---|---|
 | `SUMMARY` | `title` | Required. Events without SUMMARY are skipped. |
-| `DTSTART` | `startTime` | Required. Events without DTSTART are skipped. |
-| `DTEND` | `endTime` | Optional. Defaults to startTime + 1 hour when absent. |
+| `DTSTART` | `startTime` | Required. Missing/invalid DTSTART fails rather than inventing a date. |
+| `DTEND` | `endTime` | Optional, authoritative exclusive end. Without DTEND/DURATION: timed start + 1 elapsed hour with disclosure, or next local midnight for DATE. |
+| `DURATION` | `endTime` | Publisher duration when DTEND is absent; date-only days/weeks use local calendar boundaries. |
 | `DESCRIPTION` | `description` | Optional. If `URL` is absent or resolves back to the source feed, the first http/https URL found in DESCRIPTION is used as `eventUrl`. |
 | `LOCATION` | `location` | Optional. Used for geocoding fallback when coordinates are absent. |
 | `URL` | `eventUrl` | Optional. Relative URLs are resolved against the source feed. If the resolved URL points back to the source feed, it is ignored and DESCRIPTION fallback is used instead. |

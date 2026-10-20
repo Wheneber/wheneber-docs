@@ -52,10 +52,11 @@ for any particular source.
    event-cap overflow, or non-progress. Identical listings repeated across
    configured venues deduplicate by Ticketmaster's stable 16-hex ID; conflicting
    versions fail.
-3. Only events with publisher `dates.dateDisplay == "showDateTime"` and no
-   `cancelled`, `postponed`, or `tba` flag are candidates for output. No dates
-   are synthesized. Date-only/day-package listings and unscheduled listings
-   are excluded rather than converted to midnight performances.
+3. Events with publisher `dates.dateDisplay` of `showDateTime` or `showDate`
+   and no `cancelled`, `postponed`, or `tba` flag are candidates for output.
+   No dates are synthesized. Date-only records require publisher timezone
+   evidence and are all-day, never midnight performances. Unscheduled records
+   remain excluded.
 4. Fetch the canonical event page for **every** scheduled candidate, then parse
    only its single embedded `<script id="__NEXT_DATA__">` JSON object. Both
    recognized Ticketmaster page layouts are supported: old `edpData.context`
@@ -80,13 +81,18 @@ credentials, API keys, cookies, or private headers to the schema.
 - Title, event URL, date/time, venue, image, and inventory identity come from
   the public venue record. Start and explicit end timestamps must contain an
   offset or `Z`, and are normalized to UTC without reinterpreting publisher
-  wall time. Missing end times use the existing generic two-hour estimate;
-  this is an estimate, not Ticketmaster-published end-time evidence.
+  wall time. Missing end times use the [shared one-hour estimate](../schedule-policy.md)
+  with a bottom-of-description disclaimer after enrichment. Real ends win.
+  `showDate` date-only records are all-day when a publisher timezone is supplied
+  in `dates.timeZone`, `dates.timezone`, or `venue.timeZone`; absent timezone
+  evidence fails rather than inferring from geography. Unscheduled records
+  remain excluded.
 - Venue name, address line, city, and state are projected only from that
   inventory record. No source-wide fallback location is invented.
 - Description is plain text from the recognized detail JSON's
   `generalInfo.text`, `webInfoNoHtml`, or `webInfo`, where present. Missing
-  publisher descriptions remain null. No marketing prose is synthesized.
+  publisher descriptions remain null unless the shared estimated-end disclosure
+  is required. No marketing prose is synthesized.
 - Classification checks use metadata, never event title, text, product labels,
   URL path words, or parent-event add-on references.
 

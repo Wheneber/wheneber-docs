@@ -37,8 +37,10 @@ nav:
       - Submission API And Validation: source-schemas/submission-api-and-validation.md
       - Source Schema JSON Schema Files: source-schemas/json-schema-files.md
       - Pipeline V3 Overview (Draft): source-schemas/v3/pipeline-overview.md
+      - Shared Ingestion Schedule Policy: source-schemas/schedule-policy.md
       - TicketWeb WordPress Adapter: source-schemas/v3/ticketweb-adapter.md
       - Ticketmaster Venue Adapter: source-schemas/v3/ticketmaster-adapter.md
+      - Clark County Saffire Adapter: source-schemas/v3/clark-saffire-adapter.md
       - Tockify Public Calendar Adapter: source-schemas/v3/tockify-adapter.md
       - Pipeline V3 Examples (Draft): source-schemas/v3/pipeline-examples.md
       - Pipeline V3 Migration Guide: source-schemas/v3/migration-guide.md

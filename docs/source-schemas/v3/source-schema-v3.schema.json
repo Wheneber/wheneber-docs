@@ -23,6 +23,41 @@
       "if": {
         "properties": {
           "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": { "adapter": { "properties": { "name": { "const": "clark-saffire" } }, "required": ["name"] } },
+                "required": ["adapter"]
+              }
+            },
+            "required": ["calendar"]
+          }
+        },
+        "required": ["pipeline"]
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": {
+                  "fetch": {
+                    "type": "object", "additionalProperties": false,
+                    "properties": { "method": { "const": "GET" } }
+                  }
+                }
+              }
+            }
+          },
+          "validation": {
+            "properties": { "minEventsPerFetch": { "maximum": 100 } }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
             "properties": { "calendar": { "required": ["adapter"] } },
             "required": ["calendar"]
           }
@@ -383,9 +418,31 @@
         { "$ref": "#/$defs/eventonAdapter" },
         { "$ref": "#/$defs/ticketwebAdapter" },
         { "$ref": "#/$defs/ticketmasterAdapter" },
+        { "$ref": "#/$defs/clarkSaffireAdapter" },
         { "$ref": "#/$defs/tockifyAdapter" },
         { "$ref": "#/$defs/journeyAdapter" }
       ]
+    },
+    "clarkSaffireAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "clark-saffire" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["maxDates", "maxRequests", "maxEvents", "maxElapsedSeconds", "maxTotalResponseBytes"],
+          "properties": {
+            "maxDates": { "type": "integer", "minimum": 1, "maximum": 200 },
+            "maxRequests": { "type": "integer", "minimum": 3, "maximum": 100 },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 100 },
+            "maxElapsedSeconds": { "type": "integer", "minimum": 5, "maximum": 180 },
+            "maxTotalResponseBytes": { "type": "integer", "minimum": 8192, "maximum": 20000000 }
+          }
+        }
+      },
+      "description": "Audited Clark-only anonymous adapter. Feed must be exactly https://www.clarkcoeventcenter.com/events. Discovers public eventDays, posts five-date batches, reconciles daily detail schedules. Shared ingestion policy: timed start without end is one hour with a disclaimer; verified date without clocks is all-day using Pacific local day boundaries. Real ends win. No headers, configurable URLs, custom bodies or partial results. Invalid/ambiguous schedules fail the whole fetch."
     },
     "ticketmasterAdapter": {
       "type": "object",

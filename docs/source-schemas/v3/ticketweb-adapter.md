@@ -95,10 +95,13 @@ nonce, request body or response bootstrap in diagnostics.
   `sortkey` when present, and require matching popup date/time. Dates include
   an explicit year. Publisher-local wall times are converted using configured
   `timeZone`; DST ambiguity/nonexistent times fail instead of guessing.
-- The observed plugin does not publish end times. Missing end defaults to
-  **start + two elapsed hours**, including midnight/DST crossings; this is an
-  ingestion estimate, not a published end. Explicit local `end` in
+- The observed plugin does not publish end times. The [shared policy](../schedule-policy.md)
+  supplies **start + one elapsed hour**, including midnight/DST crossings, and
+  appends a disclosure once after enrichment. Explicit local `end` in
   `yyyy-MM-dd HH:mm:ss` or `yyyy-MM-ddTHH:mm:ss` is preserved and validated.
+- A verified date with no row or popup clock is all-day using source-local
+  midnight and next midnight. Date-only `end` is exclusive; an end clock
+  without a start clock fails. The popup date must still corroborate the row.
 - Identity is `ticketweb_{publisherId}_{yyyyMMddTHHmmss}` in source-local time.
   Row order, title edits and UTC DST offsets do not affect it. Different
   publisher IDs or scheduled occurrences remain distinct. Conflicting popup

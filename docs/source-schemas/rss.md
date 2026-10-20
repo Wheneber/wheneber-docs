@@ -73,7 +73,11 @@ Element text is used as published; HTML inside `description` is not converted to
   (with an explicit date, or an ISO/RFC timestamp) are skipped and counted in a
   `missing_or_invalid_schedule` warning. `validation.minEventsPerFetch` turns a feed where
   every item is skipped into a failed run/test.
-- A mapped `endTime` is preserved. Without one, the shared two-hour default duration applies.
+- A mapped `endTime` is preserved. Without one, a timed start receives the
+  [shared one-hour estimate and disclaimer](schedule-policy.md). A mapped event
+  date without clocks is all-day in the source timezone; no publication/current
+  time fallback is allowed. Either `startTime` or `startDate` may establish the
+  schedule (unless an event stage supplies it).
 
 ## Detail Enrichment (`Rss -> Html` / `Rss -> Json`)
 
@@ -84,7 +88,7 @@ event stage, for example `pipeline.event.type: "Html"` with
 `imageUrl`) plus optional `fieldTransforms`. Each RSS item is a seed; non-empty detail
 fields override seed fields. Detail requests honor `limits.sameHostOnly` and
 `limits.maxRequestsPerRun`. If a detail fetch fails or yields no valid schedule, the item
-is skipped unless its own RSS mappings supply a valid `startTime`.
+is skipped unless its own RSS mappings supply a valid timed start or event date.
 
 Runtime ingestion and `test-fetch` share this execution path, request headers
 (`pipeline.calendar.fetch.requestHeaders`), and field projection.
@@ -92,9 +96,9 @@ Runtime ingestion and `test-fetch` share this execution path, request headers
 ## Requirements And Validation Notes
 
 - `mappings` is required; a schema without mappings is rejected
-- `startTime` must be mapped when `pipeline.event.type` is `None`
+- `startTime` or `startDate` must be mapped when `pipeline.event.type` is `None`
 - each extraction rule value should resolve against each feed item
-- `startTime` must parse as a real date/time
+- the mapped schedule must include a real event date; a clock alone is insufficient
 - `id` is recommended for stable identity (map from `guid` when available)
 - `url` should point to the event detail page when available (map from `link`)
 - `parser.filters` and `parser.eventEnrichment` are accepted by the JSON Schema but are not

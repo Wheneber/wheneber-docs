@@ -2,6 +2,15 @@
 
 This page describes the shared contributor workflow for every source type.
 
+The only community-supported adapter is the closed
+[`clark-saffire` adapter](v3/clark-saffire-adapter.md), restricted to its exact
+audited Clark HTTPS feed and bounded configuration. Other adapters remain
+unsupported for community preview/submission. All ingestion follows the
+[shared schedule policy](schedule-policy.md): timed starts missing ends receive
+a disclosed one-hour estimate; verified dates without clocks are all-day.
+Invalid or ambiguous Clark schedules still fail the whole validation with
+occurrence diagnostics and no partial samples.
+
 > **Pre-production temporary access:** anonymous preview, submission, submission retrieval, admin-ingestion review/listing/mutation/run, and source reactivation are intentionally allowed. This is an explicit pre-production risk acceptance, not a production security design. Do not deploy with this access model. The production-blocking checklist is tracked in the repository root `TODOs.md`.
 
 - `POST /api/source-schemas/test-fetch` — non-persisting public-feed preview.
