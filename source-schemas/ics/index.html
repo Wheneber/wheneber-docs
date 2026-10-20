@@ -1,0 +1,2954 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Public documentation for Wheneber source contribution workflows for humans and AI agents.">
+      
+      
+      
+        <link rel="canonical" href="https://Wheneber.github.io/wheneber-docs/source-schemas/ics/">
+      
+      
+        <link rel="prev" href="../html-lite/troubleshooting/">
+      
+      
+        <link rel="next" href="../ics.schema.json">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Overview - Wheneber Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ics-source-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wheneber Docs" class="md-header__button md-logo" aria-label="Wheneber Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wheneber Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Wheneber/wheneber-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wheneber/wheneber-docs
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wheneber Docs" class="md-nav__button md-logo" aria-label="Wheneber Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wheneber Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Wheneber/wheneber-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wheneber/wheneber-docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start Here
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Start Here
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../choose-source-type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Choose A Source Type
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../submission-api-and-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Submission API And Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../json-schema-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source Schema JSON Schema Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../choose-source-type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Choose A Source Type
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/source-onboarding/runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Workflow (Autonomous Agent)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Source Contribution
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Human Source Contribution
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared Workflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Shared Workflow
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../choose-source-type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Choose A Source Type
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../submission-api-and-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Submission API And Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../json-schema-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source Schema JSON Schema Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/pipeline-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline V3 Overview (Draft)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schedule-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared Ingestion Schedule Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/ticketweb-adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TicketWeb WordPress Adapter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/ticketmaster-adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ticketmaster Venue Adapter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/clark-saffire-adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clark County Saffire Adapter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/tockify-adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tockify Public Calendar Adapter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/pipeline-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline V3 Examples (Draft)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/migration-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline V3 Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/type-pair-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline V3 Type Pair Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/event-input-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline V3 Event Input Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/html-detail-enrichment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Html Detail Enrichment Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v3/source-schema-v3.schema.json" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline V3 JSON Schema (Draft)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/validation-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validation Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ics Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ics Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#only-valid-format-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ ONLY Valid Format For ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When To Use It
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ics-field-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICS Field Mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-field-transforms-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional Field Transforms (Ics)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-fetch-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test-Fetch Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-html-detail-enrichment-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: HTML Detail Enrichment For ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wrong-vs-right-payload-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong Vs Right Payload Shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-submission-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community Submission Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata-policy-notes-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata Policy Notes For ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements-and-validation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements And Validation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-contributor-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Contributor Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Failure Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finding-an-ics-feed-from-a-google-calendar-embed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding an ICS Feed from a Google Calendar Embed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-ics-sources-with-the-v3-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using ICS Sources with the v3 Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ics.schema.json" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ics JSON Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rss Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rss Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rss.schema.json" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rss JSON Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JsonApi Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    JsonApi Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../json-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../json-api-v2-json-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JsonApi V2 JSON Schema (Legacy)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HtmlLite Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    HtmlLite Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite.schema.json" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HtmlLite JSON Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/api-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/schema-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/selectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/event-identity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event Identity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/time-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Time Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/platform-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/squarespace-specific-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Squarespace-Specific Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/wix-specific-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wix-Specific Selector Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/pagination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pagination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/detail-pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Detail Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/validation-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validation Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Autonomous Onboarding
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI Autonomous Onboarding
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/source-onboarding/runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Workflow (Autonomous Agent)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/source-onboarding/prompt-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ChatGPT Prompt (No HTTP Tools)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../choose-source-type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Choose A Source Type
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../submission-api-and-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Submission API And Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../html-lite/platform-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#only-valid-format-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ ONLY Valid Format For ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When To Use It
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ics-field-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICS Field Mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-field-transforms-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional Field Transforms (Ics)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-fetch-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test-Fetch Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-html-detail-enrichment-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: HTML Detail Enrichment For ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wrong-vs-right-payload-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong Vs Right Payload Shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-submission-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community Submission Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata-policy-notes-for-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata Policy Notes For ICS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements-and-validation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements And Validation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-contributor-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Contributor Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Failure Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finding-an-ics-feed-from-a-google-calendar-embed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding an ICS Feed from a Google Calendar Embed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-ics-sources-with-the-v3-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using ICS Sources with the v3 Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ics-source-guide">Ics Source Guide<a class="headerlink" href="#ics-source-guide" title="Permanent link">&para;</a></h1>
+<p>Use <code>Ics</code> when the source publishes a valid iCalendar feed. This is usually the best option when available because the parser reads standard calendar fields directly.</p>
+<p>For a machine-readable authoring contract, use the contributor-facing <a href="../ics.schema.json">Ics JSON Schema</a>.</p>
+<p>All ingestion follows the <a href="../schedule-policy/">shared schedule policy</a>. A timed
+DTSTART without DTEND/DURATION receives one elapsed hour with a final description
+disclaimer. DATE DTSTART without an end is all-day to the next source-local
+midnight (DST-aware). Published DTEND remains exclusive and DURATION wins over
+the default. Missing/invalid DTSTART is a failure, never publication/current time.</p>
+<p>Local <code>TZID</code>/<code>X-WR-TIMEZONE</code> DATE-TIME values follow RFC 5545 section 3.3.5:
+a local time that occurs twice (daylight to standard) means its <strong>first</strong>
+occurrence, and a local time that does not occur (standard to daylight) uses the
+UTC offset <strong>before</strong> the gap. For example, <code>TZID=America/New_York:20071104T013000</code>
+is 01:30 EDT and <code>TZID=America/New_York:20070311T023000</code> is 03:30 EDT. These
+values stay timed (never all-day) and are not skipped; <code>Z</code> UTC values are kept
+exactly. The same rules apply to DTEND, DURATION day arithmetic and DATE
+day boundaries. Other formats have no such standard and still fail instead.</p>
+<h2 id="only-valid-format-for-ics">⚠️ ONLY Valid Format For ICS<a class="headerlink" href="#only-valid-format-for-ics" title="Permanent link">&para;</a></h2>
+<p>The <code>Ics</code> source schema submission to Wheneber <strong>has exactly this structure and no other</strong>:</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;&lt;source name&gt;&quot;,
+  &quot;description&quot;: &quot;&lt;source description&gt;&quot;,
+  &quot;type&quot;: &quot;Ics&quot;,
+  &quot;feedUrl&quot;: &quot;&lt;url-that-returns-ics-feed&gt;&quot;,
+  &quot;schemaDefinition&quot;: &quot;&lt;json-string-with-only-validation&gt;&quot;,
+  &quot;metadata&quot;: {
+    &quot;location&quot;: &quot;&lt;location&gt;&quot;,
+    &quot;category&quot;: &quot;&lt;category&gt;&quot;,
+    &quot;region&quot;: &quot;&lt;region&gt;&quot;,
+    &quot;eventStartNotBeforeDate&quot;: &quot;&lt;yyyy-mm-dd&gt;&quot;,
+    &quot;eventFallbackUrl&quot;: &quot;&lt;public-events-page-url&gt;&quot;,
+    &quot;customAttributes&quot;: {
+      &quot;defaultLocation&quot;: &quot;&lt;street-city-state-zip&gt;&quot;,
+      &quot;defaultVenueAddress&quot;: &quot;&lt;street-city-state-zip&gt;&quot;
+    }
+  }
+}
+</code></pre>
+<p>The <code>schemaDefinition</code> is a compact JSON string containing optional <code>validation</code>, optional <code>eventEnrichment</code>, and optional <code>fieldTransforms</code>:</p>
+<pre><code class="language-json">{
+  &quot;validation&quot;: {
+    &quot;requiredFields&quot;: [&quot;title&quot;, &quot;startTime&quot;],
+    &quot;minEventsPerFetch&quot;: 1,
+    &quot;maxEventsPerFetch&quot;: 10000
+  },
+  &quot;eventEnrichment&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;parser&quot;: &quot;GenericHtml&quot;,
+    &quot;maxFetchesPerRun&quot;: 5,
+    &quot;sameHostOnly&quot;: true
+  },
+  &quot;fieldTransforms&quot;: {
+    &quot;location&quot;: [
+      {
+        &quot;type&quot;: &quot;regexReplace&quot;,
+        &quot;value&quot;: &quot;^\\s*https://teams\\.microsoft\\.com[^,]*(?:,\\s*)?(.*)$&quot;,
+        &quot;replacement&quot;: &quot;$1&quot;
+      },
+      { &quot;type&quot;: &quot;trim&quot; },
+      { &quot;type&quot;: &quot;collapseWhitespace&quot; }
+    ]
+  }
+}
+</code></pre>
+<p>or for test-fetch, simply:</p>
+<pre><code class="language-json">{}
+</code></pre>
+<p><strong>Forbidden in Ics request/schema contracts:</strong> top-level <code>url</code>, <code>mappings</code>, <code>eventMapping</code>, top-level <code>transforms</code>, <code>recurrence</code>, <code>sourceType</code>, <code>eventDefaults</code>, <code>allDay</code>.</p>
+<p><code>fieldTransforms</code> is supported inside <code>schemaDefinition</code> for deterministic per-field cleanup after RFC 5545 parsing.</p>
+<h2 id="when-to-use-it">When To Use It<a class="headerlink" href="#when-to-use-it" title="Permanent link">&para;</a></h2>
+<p>Use <code>Ics</code> when:</p>
+<ul>
+<li>the URL returns a <code>.ics</code> file or <code>text/calendar</code></li>
+<li>the feed already includes title, start, end, location, description, or event URL</li>
+<li>the source has stable event UIDs</li>
+</ul>
+<p>Do not use <code>Ics</code> when you only have HTML or JSON.</p>
+<h2 id="ics-field-mapping">ICS Field Mapping<a class="headerlink" href="#ics-field-mapping" title="Permanent link">&para;</a></h2>
+<p>The parser reads standard RFC 5545 VEVENT fields automatically. No <code>mappings</code> configuration is needed or supported.</p>
+<table>
+<thead>
+<tr>
+<th>ICS VEVENT Field</th>
+<th>Maps To</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SUMMARY</code></td>
+<td><code>title</code></td>
+<td>Required. Events without SUMMARY are skipped.</td>
+</tr>
+<tr>
+<td><code>DTSTART</code></td>
+<td><code>startTime</code></td>
+<td>Required. Missing/invalid DTSTART fails rather than inventing a date.</td>
+</tr>
+<tr>
+<td><code>DTEND</code></td>
+<td><code>endTime</code></td>
+<td>Optional, authoritative exclusive end. Without DTEND/DURATION: timed start + 1 elapsed hour with disclosure, or next local midnight for DATE.</td>
+</tr>
+<tr>
+<td><code>DURATION</code></td>
+<td><code>endTime</code></td>
+<td>Publisher duration when DTEND is absent; date-only days/weeks use local calendar boundaries.</td>
+</tr>
+<tr>
+<td><code>DESCRIPTION</code></td>
+<td><code>description</code></td>
+<td>Optional. If <code>URL</code> is absent or resolves back to the source feed, the first http/https URL found in DESCRIPTION is used as <code>eventUrl</code>.</td>
+</tr>
+<tr>
+<td><code>LOCATION</code></td>
+<td><code>location</code></td>
+<td>Optional. Used for geocoding fallback when coordinates are absent.</td>
+</tr>
+<tr>
+<td><code>URL</code></td>
+<td><code>eventUrl</code></td>
+<td>Optional. Relative URLs are resolved against the source feed. If the resolved URL points back to the source feed, it is ignored and DESCRIPTION fallback is used instead.</td>
+</tr>
+<tr>
+<td><code>UID</code></td>
+<td>identity key</td>
+<td>Strongly recommended. Improves deduplication stability.</td>
+</tr>
+<tr>
+<td><code>TZID</code> (on DTSTART)</td>
+<td><code>timeZone</code></td>
+<td>Carried through from the timezone identifier on the start field.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note on <code>URL</code> vs <code>DESCRIPTION</code>:</strong> Some sources use the <code>URL</code> VEVENT field for a shared category link rather than a per-event deep link. The parser resolves relative URLs against the source feed and ignores them when they normalize to the same target as the feed itself, even if query parameter order differs. In that case, if the <code>DESCRIPTION</code> field contains a bare absolute URL, the parser uses it as <code>eventUrl</code> automatically. You do not need to configure this — it is built-in fallback behavior.</p>
+</blockquote>
+<h2 id="optional-field-transforms-ics">Optional Field Transforms (Ics)<a class="headerlink" href="#optional-field-transforms-ics" title="Permanent link">&para;</a></h2>
+<p>Use <code>fieldTransforms</code> for deterministic cleanup of already-parsed ICS fields. This does not replace RFC 5545 parsing and does not introduce mappings.</p>
+<p>Supported keys are parsed event fields such as:</p>
+<ul>
+<li><code>title</code></li>
+<li><code>description</code></li>
+<li><code>location</code></li>
+<li><code>venueName</code></li>
+<li><code>venueAddress</code></li>
+<li><code>url</code></li>
+<li><code>imageUrl</code></li>
+</ul>
+<p>Example: strip Teams URL from <code>location</code> while preserving venue text.</p>
+<pre><code class="language-json">{
+  &quot;fieldTransforms&quot;: {
+    &quot;location&quot;: [
+      {
+        &quot;type&quot;: &quot;regexReplace&quot;,
+        &quot;value&quot;: &quot;^\\s*https://teams\\.microsoft\\.com[^,]*(?:,\\s*)?(.*)$&quot;,
+        &quot;replacement&quot;: &quot;$1&quot;
+      },
+      { &quot;type&quot;: &quot;trim&quot; },
+      { &quot;type&quot;: &quot;collapseWhitespace&quot; }
+    ]
+  }
+}
+</code></pre>
+<h2 id="test-fetch-example">Test-Fetch Example<a class="headerlink" href="#test-fetch-example" title="Permanent link">&para;</a></h2>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;Ics&quot;,
+  &quot;feedUrl&quot;: &quot;https://example.org/events.ics&quot;,
+  &quot;schemaDefinition&quot;: &quot;{}&quot;,
+  &quot;metadata&quot;: {
+    &quot;eventStartNotBeforeDate&quot;: &quot;2026-01-01&quot;,
+    &quot;eventFallbackUrl&quot;: &quot;https://example.org/events&quot;
+  }
+}
+</code></pre>
+<h2 id="optional-html-detail-enrichment-for-ics">Optional: HTML Detail Enrichment For ICS<a class="headerlink" href="#optional-html-detail-enrichment-for-ics" title="Permanent link">&para;</a></h2>
+<p>Some ICS feeds provide only partial event detail in VEVENT fields, while full details live on an event page linked by <code>eventUrl</code>.</p>
+<p>Wheneber supports optional HTML detail enrichment for <code>Ics</code> sources during ingestion and test-fetch.</p>
+<ul>
+<li>The feed remains the calendar source of truth.</li>
+<li>Detail pages are fetched only when enrichment is enabled.</li>
+<li>Enrichment fills weak or missing fields such as <code>description</code>, <code>venueAddress</code>, <code>imageUrl</code>, and (when missing) <code>location</code>.</li>
+<li>Strong ICS fields (<code>title</code>, <code>startTime</code>, <code>endTime</code>, <code>UID</code>) are not overridden.</li>
+</ul>
+<p>Enable with schema-level configuration in <code>schemaDefinition</code>:</p>
+<pre><code class="language-json">{
+  &quot;eventEnrichment&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;parser&quot;: &quot;GenericHtml&quot;,
+    &quot;maxFetchesPerRun&quot;: 5,
+    &quot;sameHostOnly&quot;: true
+  }
+}
+</code></pre>
+<p>Use <code>parser: "HtmlLite"</code> only when you also provide <code>htmlLiteMappings</code>.</p>
+<p>Recommended starting values:</p>
+<ul>
+<li><code>enabled = true</code></li>
+<li><code>maxFetchesPerRun = 25</code> for ingestion</li>
+<li><code>sameHostOnly = true</code></li>
+</ul>
+<p>For test-fetch parity with runtime ingestion behavior, send the same <code>eventEnrichment</code> block in the payload used for <code>POST /api/source-schemas/test-fetch</code>.</p>
+<h2 id="wrong-vs-right-payload-shape">Wrong Vs Right Payload Shape<a class="headerlink" href="#wrong-vs-right-payload-shape" title="Permanent link">&para;</a></h2>
+<p>The <code>Ics</code> <code>schemaDefinition</code> supports <code>validation</code>, optional <code>eventEnrichment</code>, and optional <code>fieldTransforms</code>. The parser still reads RFC 5545 fields (<code>UID</code>, <code>SUMMARY</code>, <code>DTSTART</code>, <code>DTEND</code>, <code>DESCRIPTION</code>, <code>LOCATION</code>, <code>URL</code>) directly from the feed. Do not add <code>mappings</code> or <code>eventMapping</code>.</p>
+<p>Wrong — top-level <code>url</code> instead of <code>feedUrl</code>, <code>eventMapping</code> inside <code>schemaDefinition</code>:</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;ics&quot;,
+  &quot;url&quot;: &quot;https://calendar.google.com/calendar/ical/lacentercalendar%40gmail.com/public/basic.ics&quot;,
+  &quot;eventMapping&quot;: {
+    &quot;id&quot;: &quot;uid&quot;,
+    &quot;title&quot;: &quot;summary&quot;,
+    &quot;description&quot;: &quot;description&quot;,
+    &quot;location&quot;: &quot;location&quot;,
+    &quot;startTime&quot;: &quot;dtstart&quot;,
+    &quot;endTime&quot;: &quot;dtend&quot;,
+    &quot;url&quot;: &quot;url&quot;
+  }
+}
+</code></pre>
+<p>Also wrong — <code>mappings</code> is equally unsupported in <code>schemaDefinition</code>:</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;ics&quot;,
+  &quot;url&quot;: &quot;https://calendar.google.com/calendar/ical/lacentercalendar%40gmail.com/public/basic.ics&quot;,
+  &quot;mappings&quot;: {
+    &quot;id&quot;: &quot;uid&quot;,
+    &quot;title&quot;: &quot;summary&quot;,
+    &quot;description&quot;: &quot;description&quot;,
+    &quot;location&quot;: &quot;location&quot;,
+    &quot;startTime&quot;: &quot;dtstart&quot;,
+    &quot;endTime&quot;: &quot;dtend&quot;,
+    &quot;allDay&quot;: &quot;allDay&quot;
+  }
+}
+</code></pre>
+<p>Right for this API contract (minimal <code>schemaDefinition</code>):</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;Ics&quot;,
+  &quot;feedUrl&quot;: &quot;https://calendar.google.com/calendar/ical/lacentercalendar%40gmail.com/public/basic.ics&quot;,
+  &quot;schemaDefinition&quot;: &quot;{}&quot;
+}
+</code></pre>
+<p>Also valid when you want explicit validation guards and deterministic field cleanup:</p>
+<pre><code class="language-json">{
+  &quot;type&quot;: &quot;Ics&quot;,
+  &quot;feedUrl&quot;: &quot;https://calendar.google.com/calendar/ical/lacentercalendar%40gmail.com/public/basic.ics&quot;,
+  &quot;schemaDefinition&quot;: &quot;{\&quot;validation\&quot;:{\&quot;requiredFields\&quot;:[\&quot;title\&quot;,\&quot;startTime\&quot;],\&quot;minEventsPerFetch\&quot;:1},\&quot;fieldTransforms\&quot;:{\&quot;location\&quot;:[{\&quot;type\&quot;:\&quot;regexReplace\&quot;,\&quot;value\&quot;:\&quot;^\\\\s*https://teams\\\\.microsoft\\\\.com[^,]*(?:,\\\\s*)?(.*)$\&quot;,\&quot;replacement\&quot;:\&quot;$1\&quot;},{\&quot;type\&quot;:\&quot;trim\&quot;},{\&quot;type\&quot;:\&quot;collapseWhitespace\&quot;}]}}&quot;
+}
+</code></pre>
+<p>Summary of rules:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Correct location</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feedUrl</code></td>
+<td>top-level request field</td>
+<td>not <code>url</code></td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>top-level request field</td>
+<td>value is <code>Ics</code> (capital I)</td>
+</tr>
+<tr>
+<td><code>schemaDefinition</code></td>
+<td>top-level request field</td>
+<td>compact JSON string</td>
+</tr>
+<tr>
+<td><code>validation</code></td>
+<td>inside <code>schemaDefinition</code></td>
+<td>optional validation constraints</td>
+</tr>
+<tr>
+<td><code>eventEnrichment</code></td>
+<td>inside <code>schemaDefinition</code></td>
+<td>optional detail-page enrichment settings</td>
+</tr>
+<tr>
+<td><code>fieldTransforms</code></td>
+<td>inside <code>schemaDefinition</code></td>
+<td>optional per-field cleanup after parse</td>
+</tr>
+<tr>
+<td><code>mappings</code></td>
+<td><strong>nowhere</strong></td>
+<td>unsupported for <code>Ics</code></td>
+</tr>
+<tr>
+<td><code>eventMapping</code></td>
+<td><strong>nowhere</strong></td>
+<td>unsupported for <code>Ics</code></td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td><strong>nowhere</strong></td>
+<td>use <code>feedUrl</code> at top level</td>
+</tr>
+</tbody>
+</table>
+<h2 id="community-submission-example">Community Submission Example<a class="headerlink" href="#community-submission-example" title="Permanent link">&para;</a></h2>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;Example Community Center Events&quot;,
+  &quot;description&quot;: &quot;Public iCalendar feed for Example Events&quot;,
+  &quot;type&quot;: &quot;Ics&quot;,
+  &quot;feedUrl&quot;: &quot;https://example.org/events.ics&quot;,
+  &quot;schemaDefinition&quot;: &quot;{\&quot;validation\&quot;:{\&quot;requiredFields\&quot;:[\&quot;title\&quot;,\&quot;startTime\&quot;]}}&quot;,
+  &quot;metadata&quot;: {
+    &quot;location&quot;: &quot;Example City&quot;,
+    &quot;category&quot;: &quot;community&quot;,
+    &quot;region&quot;: &quot;WA&quot;,
+    &quot;eventStartNotBeforeDate&quot;: &quot;2026-01-01&quot;,
+    &quot;eventFallbackUrl&quot;: &quot;https://example.org/events&quot;,
+    &quot;customAttributes&quot;: {
+      &quot;defaultLocation&quot;: &quot;123 Main St, Example City, WA 99999&quot;
+    }
+  }
+}
+</code></pre>
+<h2 id="metadata-policy-notes-for-ics">Metadata Policy Notes For ICS<a class="headerlink" href="#metadata-policy-notes-for-ics" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>eventStartNotBeforeDate</code> filters out older events in both test-fetch and ingestion.</li>
+<li><code>eventFallbackUrl</code> is used only when an event is missing a usable URL.</li>
+<li><code>customAttributes.defaultLocation</code> fills only <code>location</code>.</li>
+<li><code>customAttributes.defaultVenueAddress</code> fills only <code>venueAddress</code>.</li>
+<li><code>defaultLocation</code> and <code>defaultVenueAddress</code> are independent and do not cross-fill.</li>
+</ul>
+<h2 id="requirements-and-validation-notes">Requirements And Validation Notes<a class="headerlink" href="#requirements-and-validation-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>feedUrl</code> must return a valid ICS feed</li>
+<li><code>title</code> and <code>startTime</code> should be present on real events</li>
+<li><code>UID</code> is strongly preferred because it improves identity stability</li>
+<li>missing <code>DtEnd</code> values may be normalized to a default duration by the parser</li>
+<li>all-day and timezone data should be checked in <code>sampleEvents</code></li>
+</ul>
+<h2 id="recommended-contributor-workflow">Recommended Contributor Workflow<a class="headerlink" href="#recommended-contributor-workflow" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Confirm the feed is really ICS.</li>
+<li>Start with the minimal validation object above.</li>
+<li>Run <code>test-fetch</code>.</li>
+<li>Check that titles and start times are populated and plausible.</li>
+<li>Submit with <code>community-submissions</code>.</li>
+</ol>
+<h2 id="common-failure-modes">Common Failure Modes<a class="headerlink" href="#common-failure-modes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The URL is not actually an ICS response</li>
+<li>The feed is empty or stale</li>
+<li>Titles are blank or missing on some events</li>
+<li>Timezone handling in the source is inconsistent</li>
+</ul>
+<p>See also: <a href="../submission-api-and-validation/">Submission API And Validation</a></p>
+<h2 id="finding-an-ics-feed-from-a-google-calendar-embed">Finding an ICS Feed from a Google Calendar Embed<a class="headerlink" href="#finding-an-ics-feed-from-a-google-calendar-embed" title="Permanent link">&para;</a></h2>
+<p>Some sources do not publish their own ICS feed. Instead, their events page embeds a Google Calendar iframe. You can still create an <code>Ics</code> source by extracting the underlying feed URL from the embed.</p>
+<p>Steps:</p>
+<ol>
+<li>View the page source (<code>Ctrl+U</code> in most browsers — or use a "View page source" option).</li>
+<li>Search for <code>calendar.google.com</code> and locate the <code>&lt;iframe&gt;</code> <code>src</code> attribute value.</li>
+<li>The <code>src</code> URL contains one or more <code>src=...</code> query parameters. Each value is a base64-encoded Google Calendar ID.</li>
+<li>Decode each base64 value. In PowerShell: <code>[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("PASTE_VALUE_HERE"))</code>. In a browser console: <code>atob("PASTE_VALUE_HERE")</code>. The decoded ID ends with <code>@group.calendar.google.com</code> or <code>@gmail.com</code>.</li>
+<li>If the iframe contains multiple <code>src</code> parameters, inspect each decoded calendar ID before choosing one. Embedded pages often include unrelated calendars such as U.S. holidays, shared venue calendars, or secondary collections.</li>
+<li>Submit only the venue-owned or organization-owned public calendar that actually represents the source you are onboarding.</li>
+<li>URL-encode the decoded calendar ID (replace <code>@</code> with <code>%40</code>, <code>/</code> with <code>%2F</code>, etc.).</li>
+<li>Construct the ICS feed URL: <code>https://calendar.google.com/calendar/ical/{URL_ENCODED_CALENDAR_ID}/public/basic.ics</code></li>
+<li>Test the URL in your browser or with <code>test-fetch</code>. A private or restricted calendar returns 404 or 403 — only submit public feeds.</li>
+</ol>
+<p>When a source embeds multiple Google Calendars (for example, one for performances and one for auditions), create a <strong>separate ICS source submission</strong> for each public calendar.</p>
+<h2 id="using-ics-sources-with-the-v3-pipeline">Using ICS Sources with the v3 Pipeline<a class="headerlink" href="#using-ics-sources-with-the-v3-pipeline" title="Permanent link">&para;</a></h2>
+<p>When writing a v3 <code>schemaDefinition</code> for an ICS feed, use <code>pipeline.calendar.type = "Ics"</code>. If the feed provides complete event data without any detail-page enrichment, <code>pipeline.event.type</code> must be <code>"None"</code>:</p>
+<pre><code class="language-json">{
+  &quot;schemaVersion&quot;: 3,
+  &quot;pipeline&quot;: {
+    &quot;calendar&quot;: {
+      &quot;type&quot;: &quot;Ics&quot;,
+      &quot;parser&quot;: {}
+    },
+    &quot;event&quot;: {
+      &quot;type&quot;: &quot;None&quot;,
+      &quot;input&quot;: { &quot;mode&quot;: &quot;none&quot; },
+      &quot;parser&quot;: {}
+    }
+  },
+  &quot;validation&quot;: {
+    &quot;requiredFields&quot;: [&quot;title&quot;, &quot;startTime&quot;]
+  }
+}
+</code></pre>
+<p>Do not set <code>pipeline.event.type</code> to <code>"Html"</code> for a plain ICS feed that needs no HTML enrichment — that combination requires a real HTML parser input configuration and will fail validation. Use <code>Ics → Html</code> only when you also need to fetch each event's detail page via <code>eventUrl</code>. See <a href="../v3/pipeline-examples/">v3 Pipeline Examples</a> for the full matrix.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

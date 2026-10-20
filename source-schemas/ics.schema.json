@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://Wheneber.github.io/wheneber-docs/source-schemas/ics.schema.json",
+  "title": "Wheneber Ics schemaDefinition",
+  "description": "Contributor-facing JSON Schema for Wheneber Ics source schemas.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "fieldTransforms": {
+      "$ref": "#/$defs/fieldTransformsByField"
+    },
+    "eventEnrichment": {
+      "$ref": "#/$defs/eventEnrichment"
+    },
+    "validation": {
+      "$ref": "#/$defs/validationRules"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "eventEnrichment": {
+            "properties": {
+              "enabled": { "const": true },
+              "parser": { "const": "HtmlLite" }
+            },
+            "required": ["enabled", "parser"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "eventEnrichment": {
+            "required": ["htmlLiteMappings"]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "fieldTransform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "trim",
+            "collapseWhitespace",
+            "removePrefix",
+            "removeSuffix",
+            "replaceLiteral",
+            "stripWrappingQuotes",
+            "nullIfEqualsAny",
+            "regexReplace"
+          ]
+        },
+        "value": {
+          "type": "string"
+        },
+        "replacement": {
+          "type": "string"
+        },
+        "ignoreCase": {
+          "type": "boolean"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": ["removePrefix", "removeSuffix", "replaceLiteral", "regexReplace"]
+              }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["value"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "nullIfEqualsAny"
+              }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["values"]
+          }
+        }
+      ]
+    },
+    "fieldTransformList": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/fieldTransform"
+      }
+    },
+    "fieldTransformsByField": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/fieldTransformList" },
+        "description": { "$ref": "#/$defs/fieldTransformList" },
+        "location": { "$ref": "#/$defs/fieldTransformList" },
+        "venueName": { "$ref": "#/$defs/fieldTransformList" },
+        "venueAddress": { "$ref": "#/$defs/fieldTransformList" },
+        "url": { "$ref": "#/$defs/fieldTransformList" },
+        "imageUrl": { "$ref": "#/$defs/fieldTransformList" }
+      }
+    },
+    "mappingValue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "htmlMappings": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "description": { "$ref": "#/$defs/mappingValue" },
+        "location": { "$ref": "#/$defs/mappingValue" },
+        "venueName": { "$ref": "#/$defs/mappingValue" },
+        "venueAddress": { "$ref": "#/$defs/mappingValue" },
+        "imageUrl": { "$ref": "#/$defs/mappingValue" },
+        "url": { "$ref": "#/$defs/mappingValue" }
+      }
+    },
+    "eventEnrichment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "parser"],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "parser": {
+          "type": "string",
+          "enum": ["GenericHtml", "HtmlLite"]
+        },
+        "maxFetchesPerRun": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sameHostOnly": {
+          "type": "boolean"
+        },
+        "htmlLiteMappings": {
+          "$ref": "#/$defs/htmlMappings"
+        }
+      }
+    },
+    "validationRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minEventsPerFetch": {
+          "type": "integer"
+        },
+        "maxEventsPerFetch": {
+          "type": "integer"
+        },
+        "requiredFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

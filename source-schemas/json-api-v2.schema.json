@@ -1,0 +1,506 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://Wheneber.github.io/wheneber-docs/source-schemas/json-api-v2.schema.json",
+  "title": "Wheneber JsonApi schemaDefinition v2",
+  "description": "Contributor-facing JSON Schema for Wheneber JsonApi source schemas using schemaVersion 2. This mirrors the documented and backend-supported shape for source onboarding, but backend validation remains the final source of truth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "eventArrayPath",
+    "mappings"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 2,
+      "description": "JsonApi v2 schema version. New JsonApi sources should default to 2."
+    },
+    "eventArrayPath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Primary path to repeated event nodes."
+    },
+    "eventArrayPaths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "Alternate event paths."
+    },
+    "mappings": {
+      "$ref": "#/$defs/stringMap",
+      "description": "Maps output fields to JSONPath-like strings."
+    },
+    "pagination": {
+      "$ref": "#/$defs/paginationConfig"
+    },
+    "authentication": {
+      "$ref": "#/$defs/authenticationConfig"
+    },
+    "validation": {
+      "$ref": "#/$defs/validationRules"
+    },
+    "requestHeaders": {
+      "$ref": "#/$defs/requestHeaders"
+    },
+    "requestWorkflow": {
+      "$ref": "#/$defs/requestWorkflowConfig"
+    },
+    "validationProfile": {
+      "type": "string",
+      "enum": ["Basic", "Advanced"]
+    },
+    "tokenConfig": {
+      "$ref": "#/$defs/tokenConfig"
+    },
+    "queryTemplates": {
+      "$ref": "#/$defs/queryTemplateConfig"
+    },
+    "responseTransforms": {
+      "$ref": "#/$defs/responseTransformConfig"
+    },
+    "eventEnrichment": {
+      "$ref": "#/$defs/eventEnrichment"
+    }
+  },
+  "allOf": [
+    {
+      "not": {
+        "required": ["requestWorkflow", "pagination"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "validationProfile": {
+            "const": "Basic"
+          }
+        },
+        "required": ["validationProfile"]
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            { "required": ["tokenConfig"] },
+            { "required": ["queryTemplates"] },
+            { "required": ["responseTransforms"] },
+            {
+              "properties": {
+                "pagination": {
+                  "required": ["windowedConfig"]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tokenConfig": {
+            "properties": {
+              "acquisitionStrategy": {
+                "const": "Dynamic"
+              }
+            },
+            "required": ["acquisitionStrategy"]
+          }
+        },
+        "required": ["tokenConfig"]
+      },
+      "then": {
+        "properties": {
+          "tokenConfig": {
+            "properties": {
+              "dynamicAcquisition": {
+                "required": ["endpoint"]
+              }
+            },
+            "required": ["dynamicAcquisition"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "eventEnrichment": {
+            "properties": {
+              "enabled": { "const": true },
+              "parser": { "const": "HtmlLite" }
+            },
+            "required": ["enabled", "parser"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "eventEnrichment": {
+            "required": ["htmlLiteMappings"]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stringMap": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 300,
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "validationRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minEventsPerFetch": {
+          "type": "integer"
+        },
+        "maxEventsPerFetch": {
+          "type": "integer"
+        },
+        "requiredFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "mappingValue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "htmlMappings": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "description": { "$ref": "#/$defs/mappingValue" },
+        "location": { "$ref": "#/$defs/mappingValue" },
+        "venueName": { "$ref": "#/$defs/mappingValue" },
+        "venueAddress": { "$ref": "#/$defs/mappingValue" },
+        "imageUrl": { "$ref": "#/$defs/mappingValue" },
+        "url": { "$ref": "#/$defs/mappingValue" }
+      }
+    },
+    "eventEnrichment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "parser"],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "parser": {
+          "type": "string",
+          "enum": ["GenericHtml", "HtmlLite"]
+        },
+        "maxFetchesPerRun": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sameHostOnly": {
+          "type": "boolean"
+        },
+        "htmlLiteMappings": {
+          "$ref": "#/$defs/htmlMappings"
+        }
+      }
+    },
+    "paginationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy"],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": ["Offset", "Cursor", "Page"]
+        },
+        "offsetParamName": {
+          "type": "string"
+        },
+        "pageParamName": {
+          "type": "string"
+        },
+        "cursorParamName": {
+          "type": "string"
+        },
+        "pageSizeParamName": {
+          "type": "string"
+        },
+        "defaultPageSize": {
+          "type": "integer"
+        },
+        "hasMoreIndicator": {
+          "type": "string"
+        },
+        "totalCountIndicator": {
+          "type": "string"
+        },
+        "windowedConfig": {
+          "$ref": "#/$defs/windowedPaginationConfig"
+        },
+        "maxRequestsPerRun": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "windowedPaginationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dateHorizonDays", "windowSizeDays", "maxPagesPerWindow"],
+      "properties": {
+        "dateHorizonDays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "windowSizeDays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maxPagesPerWindow": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeZoneId": {
+          "type": "string"
+        },
+        "dateFormat": {
+          "type": "string"
+        },
+        "pageSize": {
+          "type": "integer"
+        }
+      }
+    },
+    "authenticationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["None", "ApiKey", "Bearer", "Basic"]
+        },
+        "headerName": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        }
+      }
+    },
+    "requestHeaders": {
+      "type": "object",
+      "maxProperties": 50,
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9-]+$"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "requestWorkflowConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["steps"],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 25,
+          "items": {
+            "$ref": "#/$defs/requestWorkflowStepConfig"
+          }
+        },
+        "finalResponseStepId": {
+          "type": "string"
+        }
+      }
+    },
+    "requestWorkflowStepConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["Get", "Post"]
+        },
+        "bodyTemplate": {
+          "type": "string"
+        },
+        "headers": {
+          "$ref": "#/$defs/requestHeaders"
+        },
+        "authentication": {
+          "$ref": "#/$defs/authenticationConfig"
+        },
+        "extractBindings": {
+          "$ref": "#/$defs/stringMap"
+        }
+      }
+    },
+    "tokenConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["acquisitionStrategy"],
+      "properties": {
+        "acquisitionStrategy": {
+          "type": "string",
+          "enum": ["Static", "Dynamic", "Environment"]
+        },
+        "dynamicAcquisition": {
+          "$ref": "#/$defs/dynamicTokenAcquisitionConfig"
+        },
+        "fallback": {
+          "$ref": "#/$defs/tokenFallbackConfig"
+        },
+        "cache": {
+          "$ref": "#/$defs/tokenCacheConfig"
+        }
+      }
+    },
+    "dynamicTokenAcquisitionConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["endpoint"],
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["Get", "Post"]
+        },
+        "headers": {
+          "$ref": "#/$defs/requestHeaders"
+        },
+        "bodyTemplate": {
+          "type": "string"
+        },
+        "extractPath": {
+          "type": "string"
+        },
+        "bindingKey": {
+          "type": "string"
+        },
+        "expiryBufferSeconds": {
+          "type": "integer"
+        }
+      }
+    },
+    "tokenFallbackConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "metadataTokenKey": {
+          "type": "string"
+        },
+        "defaultToken": {
+          "type": "string"
+        }
+      }
+    },
+    "tokenCacheConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ttlSeconds": {
+          "type": "integer"
+        }
+      }
+    },
+    "queryTemplateConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "urlTemplate": {
+          "type": "string"
+        },
+        "bodyTemplate": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "object",
+          "maxProperties": 150,
+          "additionalProperties": {
+            "$ref": "#/$defs/queryTemplateParameter"
+          }
+        }
+      }
+    },
+    "queryTemplateParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["Literal", "Binding", "Metadata", "WindowStart", "WindowEnd", "Pagination", "Config"]
+        },
+        "sourceKey": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "defaultValue": {
+          "type": "string"
+        }
+      }
+    },
+    "responseTransformConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "flattenPath": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/responseFieldTransform"
+          }
+        }
+      }
+    },
+    "responseFieldTransform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["String", "DateTime", "Number", "Array", "Composite", "GeoPoint"]
+        },
+        "template": {
+          "type": "string"
+        },
+        "inputs": {
+          "$ref": "#/$defs/stringMap"
+        }
+      }
+    }
+  }
+}

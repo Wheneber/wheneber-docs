@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://Wheneber.github.io/wheneber-docs/source-schemas/rss.schema.json",
+  "title": "Wheneber Rss schemaDefinition",
+  "description": "Contributor-facing JSON Schema for pipeline.calendar.parser when pipeline.calendar.type is Rss.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mappings"
+  ],
+  "properties": {
+    "mappings": {
+      "$ref": "#/$defs/rssMappings"
+    },
+    "filters": {
+      "$ref": "#/$defs/rssFilters"
+    },
+    "eventEnrichment": {
+      "$ref": "#/$defs/eventEnrichment"
+    },
+    "validation": {
+      "$ref": "#/$defs/validationRules"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "eventEnrichment": {
+            "properties": {
+              "enabled": { "const": true },
+              "parser": { "const": "HtmlLite" }
+            },
+            "required": ["enabled", "parser"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "eventEnrichment": {
+            "required": ["htmlLiteMappings"]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "rssMappings": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "id": { "type": "string" },
+        "guid": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "startTime": { "type": "string" },
+        "startDate": { "type": "string" },
+        "endTime": { "type": "string" },
+        "endDate": { "type": "string" },
+        "pubDate": { "type": "string" },
+        "location": { "type": "string" },
+        "url": { "type": "string" },
+        "link": { "type": "string" },
+        "timeZone": { "type": "string" },
+        "timezone": { "type": "string" }
+      }
+    },
+    "rssFilters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "includeAny": {
+          "$ref": "#/$defs/rssFilterRules"
+        },
+        "excludeAny": {
+          "$ref": "#/$defs/rssFilterRules"
+        }
+      }
+    },
+    "rssFilterRules": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "$ref": "#/$defs/rssFilterRule"
+      }
+    },
+    "rssFilterRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "value"],
+      "properties": {
+        "field": {
+          "type": "string",
+          "enum": ["title", "description", "eventUrl", "category"]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "matchType": {
+          "type": "string",
+          "enum": ["contains", "equals", "startsWith", "endsWith", "regex"]
+        },
+        "caseSensitive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "validationRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minEventsPerFetch": {
+          "type": "integer"
+        },
+        "maxEventsPerFetch": {
+          "type": "integer"
+        },
+        "requiredFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "mappingValue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "htmlMappings": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "description": { "$ref": "#/$defs/mappingValue" },
+        "location": { "$ref": "#/$defs/mappingValue" },
+        "venueName": { "$ref": "#/$defs/mappingValue" },
+        "venueAddress": { "$ref": "#/$defs/mappingValue" },
+        "imageUrl": { "$ref": "#/$defs/mappingValue" },
+        "url": { "$ref": "#/$defs/mappingValue" }
+      }
+    },
+    "eventEnrichment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "parser"],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "parser": {
+          "type": "string",
+          "enum": ["GenericHtml", "HtmlLite"]
+        },
+        "maxFetchesPerRun": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sameHostOnly": {
+          "type": "boolean"
+        },
+        "htmlLiteMappings": {
+          "$ref": "#/$defs/htmlMappings"
+        }
+      }
+    }
+  }
+}

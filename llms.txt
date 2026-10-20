@@ -1,0 +1,58 @@
+# Wheneber Source Onboarding Docs
+
+> Public documentation for onboarding event sources into Wheneber. Covers schema
+> submission, test-fetch validation, and contributor workflows for human contributors
+> and autonomous AI agents. All pages below are raw markdown — fetch them directly
+> without JavaScript.
+
+## Core pages
+
+- [Home / Index](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/index.md)
+- [Choose A Source Type](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/choose-source-type.md)
+- [Submission API And Validation](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/submission-api-and-validation.md)
+- [Source Schema JSON Schema Files](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/json-schema-files.md)
+
+## Source type guides
+
+- [ICS](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/ics.md)
+- [RSS](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/rss.md)
+- [JsonApi](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/json-api.md)
+- [Pipeline V3 Overview](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/pipeline-overview.md)
+- [TicketWeb WordPress Adapter](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/ticketweb-adapter.md)
+- [Pipeline V3 Examples](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/pipeline-examples.md)
+- [Pipeline V3 Migration Guide](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/migration-guide.md)
+- [Pipeline V3 Type Pair Reference](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/type-pair-reference.md)
+- [Pipeline V3 Event Input Constraints](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/event-input-constraints.md)
+- [Html Detail Enrichment Patterns](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/html-detail-enrichment.md)
+- [HtmlLite Overview](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/overview.md)
+- [HtmlLite API Workflow](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/api-workflow.md)
+- [HtmlLite Schema Basics](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/schema-basics.md)
+- [HtmlLite Selectors](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/selectors.md)
+- [HtmlLite Event Identity](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/event-identity.md)
+- [HtmlLite Time Handling](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/time-handling.md)
+- [HtmlLite Pagination](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/pagination.md)
+- [HtmlLite Detail Pages](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/detail-pages.md)
+- [HtmlLite Validation Checklist](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/validation-checklist.md)
+- [HtmlLite Troubleshooting](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite/troubleshooting.md)
+
+## Machine-readable schemaDefinition contracts (JSON Schema)
+
+These files describe the allowed shape of the inner `schemaDefinition` field for each
+source type. Use them to validate or generate a `schemaDefinition` before calling the API.
+
+- [ICS schemaDefinition JSON Schema](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/ics.schema.json)
+- [RSS schemaDefinition JSON Schema](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/rss.schema.json)
+- [Pipeline V3 schemaDefinition JSON Schema](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/v3/source-schema-v3.schema.json)
+- [JsonApi V2 schemaDefinition JSON Schema (legacy)](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/json-api-v2.schema.json)
+- [HtmlLite schemaDefinition JSON Schema](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/html-lite.schema.json)
+
+## API request envelope contract (JSON Schema)
+
+Defines the valid payload structure for both test-fetch and community-submissions endpoints.
+
+- [Submission Request JSON Schema](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/source-schemas/submission-request.schema.json) — describes name, description, type, feedUrl, schemaDefinition, metadata fields
+
+## AI agent documentation
+
+- [Autonomous Runbook](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/ai/source-onboarding/runbook.md)
+- [ChatGPT Prompt Template](https://raw.githubusercontent.com/Wheneber/wheneber-docs/main/docs/ai/source-onboarding/prompt-template.md)

@@ -1,0 +1,790 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://Wheneber.github.io/wheneber-docs/source-schemas/v3/source-schema-v3.schema.json",
+  "title": "Wheneber source schemaDefinition v3 pipeline",
+  "description": "Two-stage source schemaDefinition contract with calendar and event parser sections.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "pipeline"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 3
+    },
+    "pipeline": {
+      "$ref": "#/$defs/pipeline"
+    },
+    "validation": {
+      "$ref": "#/$defs/validationRules"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": { "adapter": { "properties": { "name": { "const": "clark-saffire" } }, "required": ["name"] } },
+                "required": ["adapter"]
+              }
+            },
+            "required": ["calendar"]
+          }
+        },
+        "required": ["pipeline"]
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": {
+                  "fetch": {
+                    "type": "object", "additionalProperties": false,
+                    "properties": { "method": { "const": "GET" } }
+                  }
+                }
+              }
+            }
+          },
+          "validation": {
+            "properties": { "minEventsPerFetch": { "maximum": 100 } }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": { "calendar": { "required": ["adapter"] } },
+            "required": ["calendar"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "validation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": { "minEventsPerFetch": { "type": "integer", "minimum": 0 } }
+          },
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "type": { "const": "None" },
+                  "parser": { "maxProperties": 0 }
+                },
+                "not": { "required": ["limits"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": { "type": { "const": "Ics" } },
+                "required": ["type"]
+              }
+            },
+            "required": ["calendar"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "type": { "enum": ["None", "Html", "Json"] }
+                },
+                "required": ["type"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": { "type": { "const": "Html" } },
+                "not": { "required": ["adapter"] },
+                "required": ["type"]
+              }
+            },
+            "required": ["calendar"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "type": { "enum": ["Html", "Json"] }
+                },
+                "required": ["type"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": { "type": { "const": "Json" } },
+                "required": ["type"]
+              }
+            },
+            "required": ["calendar"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "type": { "enum": ["None", "Html", "Json"] }
+                },
+                "required": ["type"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "calendar": {
+                "properties": { "type": { "const": "Rss" } },
+                "required": ["type"]
+              }
+            },
+            "required": ["calendar"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "type": { "enum": ["None", "Html", "Json"] }
+                },
+                "required": ["type"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": { "type": { "const": "None" } },
+                "required": ["type"]
+              }
+            },
+            "required": ["event"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "input": {
+                    "properties": { "mode": { "const": "none" } },
+                    "required": ["mode"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "type": { "enum": ["Html", "Json"] }
+                },
+                "required": ["type"]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "required": ["limits"],
+                "properties": {
+                  "input": {
+                    "properties": {
+                      "mode": { "enum": ["calendarFieldUrl", "fixedUrl"] }
+                    },
+                    "required": ["mode"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "input": {
+                    "properties": {
+                      "mode": { "const": "calendarFieldUrl" }
+                    },
+                    "required": ["mode"]
+                  }
+                },
+                "required": ["input"]
+              }
+            },
+            "required": ["event"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "input": {
+                    "required": ["field"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "input": {
+                    "properties": {
+                      "mode": { "const": "fixedUrl" }
+                    },
+                    "required": ["mode"]
+                  }
+                },
+                "required": ["input"]
+              }
+            },
+            "required": ["event"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "pipeline": {
+            "properties": {
+              "event": {
+                "properties": {
+                  "input": {
+                    "required": ["urlTemplate"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "pipeline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "event"],
+      "properties": {
+        "calendar": {
+          "$ref": "#/$defs/calendarStage"
+        },
+        "event": {
+          "$ref": "#/$defs/eventStage"
+        }
+      }
+    },
+    "calendarStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "parser"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["Ics", "Html", "Json", "Rss"]
+        },
+        "fetch": {
+          "$ref": "#/$defs/fetchConfig"
+        },
+        "adapter": {
+          "$ref": "#/$defs/sourceAdapter",
+          "description": "Optional closed, code-owned adapter selection; absent preserves normal parser execution."
+        },
+        "parser": {
+          "type": "object",
+          "description": "Parser-specific options for calendar stage."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              { "properties": { "type": { "not": { "const": "Json" } } }, "required": ["type"] },
+              { "required": ["adapter"] }
+            ]
+          },
+          "then": {
+            "properties": {
+              "fetch": {
+                "properties": { "method": { "const": "GET" } },
+                "not": { "required": ["jsonBody"] }
+              }
+            }
+          }
+        },
+        {
+          "if": { "required": ["adapter"] },
+          "then": {
+            "properties": {
+              "type": { "const": "Html" },
+              "parser": { "type": "object", "maxProperties": 0 },
+              "fetch": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "method": { "const": "GET" },
+                  "requestHeaders": { "type": "object", "additionalProperties": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "sourceAdapter": {
+      "oneOf": [
+        { "$ref": "#/$defs/eventonAdapter" },
+        { "$ref": "#/$defs/ticketwebAdapter" },
+        { "$ref": "#/$defs/ticketmasterAdapter" },
+        { "$ref": "#/$defs/clarkSaffireAdapter" },
+        { "$ref": "#/$defs/tockifyAdapter" },
+        { "$ref": "#/$defs/journeyAdapter" }
+      ]
+    },
+    "clarkSaffireAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "clark-saffire" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["maxDates", "maxRequests", "maxEvents", "maxElapsedSeconds", "maxTotalResponseBytes"],
+          "properties": {
+            "maxDates": { "type": "integer", "minimum": 1, "maximum": 200 },
+            "maxRequests": { "type": "integer", "minimum": 3, "maximum": 100 },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 100 },
+            "maxElapsedSeconds": { "type": "integer", "minimum": 5, "maximum": 180 },
+            "maxTotalResponseBytes": { "type": "integer", "minimum": 8192, "maximum": 20000000 }
+          }
+        }
+      },
+      "description": "Audited Clark-only anonymous adapter. Feed must be exactly https://www.clarkcoeventcenter.com/events. Discovers public eventDays, posts five-date batches, reconciles daily detail schedules. Shared ingestion policy: timed start without end is one hour with a disclaimer; verified date without clocks is all-day using Pacific local day boundaries. Real ends win. No headers, configurable URLs, custom bodies or partial results. Invalid/ambiguous schedules fail the whole fetch."
+    },
+    "ticketmasterAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "ticketmaster" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["venueIds", "maxRequests", "maxEvents"],
+          "properties": {
+            "venueIds": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 10,
+              "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^[0-9]{1,20}$" },
+              "description": "One or more publisher venue identifiers. Adapter code owns the fixed Ticketmaster venue-search endpoint; no source-specific venue IDs are embedded."
+            },
+            "pageSize": {
+              "type": "integer",
+              "const": 20,
+              "default": 20,
+              "description": "The publisher endpoint's fixed page size. Only 20 is currently supported."
+            },
+            "maxRequests": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 1000,
+              "description": "Whole-run request budget for all venue inventory pages and every scheduled-event detail classification fetch. Exhaustion fails without returning partial events."
+            },
+            "maxEvents": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5000,
+              "description": "Maximum combined venue inventory and unique output events. Overflow fails; inventory pages are never truncated."
+            }
+          }
+        }
+      }
+    },
+    "tockifyAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "tockify" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["futureDays", "pageSize", "maxRequests", "maxEvents", "allowedOrigins"],
+          "properties": {
+            "futureDays": { "type": "integer", "minimum": 1, "maximum": 730, "description": "Rolling UTC horizon from execution instant; lower bound is shared 24-hour freshness lookback. All inventory pages are exhausted." },
+            "pageSize": { "type": "integer", "minimum": 1, "maximum": 100 },
+            "maxRequests": { "type": "integer", "minimum": 2, "maximum": 1000, "description": "Whole-run budget including bootstrap, inventory and required detail joins. Exhaustion fails without partial output." },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 5000, "description": "Inventory and output cap; overflow fails rather than truncates." },
+            "allowedOrigins": {
+              "type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^https://[^/?#@]+/?$" },
+              "description": "Default-port HTTPS origins only. Every request must match the feed host and code-owned calendar/API/detail path and query rules. No redirects or cookies."
+            },
+            "venue": {
+              "type": "object", "additionalProperties": false, "required": ["name", "address", "evidenceUrl"],
+              "description": "Optional verified single-venue fact. Only fills absent fields if remaining published fields agree. Evidence must be the same-origin public calendar page.",
+              "properties": {
+                "name": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "address": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "evidenceUrl": { "type": "string", "minLength": 1, "maxLength": 500 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ticketwebAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "ticketweb" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["timeZone", "allowedOrigins"],
+          "properties": {
+            "futureMonths": { "type": "integer", "minimum": 1, "maximum": 24, "default": 12, "description": "Calendar months INCLUDING current source-local month, not a fixed-day duration." },
+            "timeZone": { "type": "string", "minLength": 1, "maxLength": 500, "description": "System-supported timezone, preferably IANA. Required operator evidence/assumption for publisher-local wall times." },
+            "allowedOrigins": {
+              "type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^https://[^/?#@]+/?$" },
+              "description": "Every requested URL must also match the feed's exact origin. Redirects/cookies disabled; no credentials or query on bootstrap/admin-ajax."
+            },
+            "maxRequests": { "type": "integer", "minimum": 2, "maximum": 25, "description": "Defaults to futureMonths + 1. Must cover bootstrap GET and one POST per month; runtime enforces this relation." },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 5000, "default": 1000, "description": "Whole-window occurrence cap; overflow fails, never truncates. Monthly raw-row count is also bounded." },
+            "venue": {
+              "type": "object", "additionalProperties": false, "required": ["name", "address", "evidenceUrl"],
+              "description": "Optional manually verified single-venue fact. Only fills missing venue fields, never replaces a different published venue. Evidence URL must be same-origin HTTPS without query.",
+              "properties": {
+                "name": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "address": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "evidenceUrl": { "type": "string", "minLength": 1, "maxLength": 500 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "journeyAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "journey" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["futureMonths", "maxRequests", "maxFeeds", "maxEvents"],
+          "properties": {
+            "futureMonths": { "type": "integer", "minimum": 1, "maximum": 24, "description": "Rolling window from current instant through this many months ahead, plus the shared 24-hour freshness lookback. Official calendar timestamps are authoritative." },
+            "maxRequests": { "type": "integer", "minimum": 4, "maximum": 50, "description": "Whole-run GET budget including bootstrap, reserved fallback, catalogue pages, optional descriptions and discovered feeds. Feed overflow fails, not truncates." },
+            "maxFeeds": { "type": "integer", "minimum": 1, "maximum": 20 },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 5000 }
+          }
+        }
+      }
+    },
+    "eventonAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "options"],
+      "properties": {
+        "name": { "const": "eventon" },
+        "options": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["futureMonths", "timeZone", "allowedOrigins", "maxRequests", "maxEvents"],
+          "properties": {
+            "futureMonths": { "type": "integer", "minimum": 1, "maximum": 24, "description": "Explicit rolling calendar-month count, INCLUDING current source-local month. No default." },
+            "timeZone": { "type": "string", "minLength": 1, "description": "System-supported timezone, preferably IANA; used for calendar month boundaries, never to reinterpret occurrence Unix timestamps." },
+            "allowedOrigins": {
+              "type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^https://[^/?#@]+/?$" },
+              "description": "HTTPS origin allowlist; every adapter URL must ALSO have exactly the feed origin (including port). Redirects are disabled."
+            },
+            "maxRequests": { "type": "integer", "minimum": 2, "maximum": 25, "description": "Must be at least futureMonths + 1 (bootstrap GET plus monthly POSTs); enforced by runtime." },
+            "maxEvents": { "type": "integer", "minimum": 1, "maximum": 5000, "description": "Whole-window unique occurrence cap; exceeding this or the server cap fails, never truncates." },
+            "venue": {
+              "type": "object", "additionalProperties": false, "required": ["name", "address", "evidenceUrl"],
+              "description": "Optional, manually verified source-wide venue fact, only for single-venue calendars. Not an inferred placeholder or description fallback. Evidence URL must be same-origin HTTPS.",
+              "properties": {
+                "name": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "address": { "type": "string", "minLength": 1, "maxLength": 500 },
+                "evidenceUrl": { "type": "string", "minLength": 1, "maxLength": 500 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "eventStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "input", "parser"],
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "Html" } } },
+          "then": { "properties": { "parser": { "$ref": "#/$defs/htmlEventParser" } } }
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["None", "Html", "Json"]
+        },
+        "input": {
+          "$ref": "#/$defs/eventInput"
+        },
+        "parser": {
+          "type": "object",
+          "description": "Parser-specific options for event stage."
+        },
+        "limits": {
+          "$ref": "#/$defs/eventLimits"
+        }
+      }
+    },
+    "htmlEventParser": {
+      "type": "object",
+      "description": "HTML detail mappings are occurrence-relative; absolute XPath reads document metadata.",
+      "properties": {
+        "expansion": { "type": "string", "enum": ["single", "fanOut"] },
+        "occurrenceSelector": { "type": "string", "minLength": 1 },
+        "mappings": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "fieldTransforms": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {
+                "type": { "enum": ["trim", "collapseWhitespace", "regexReplace", "replaceLiteral"] },
+                "value": { "type": "string" },
+                "replacement": { "type": "string" },
+                "ignoreCase": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "expansion": { "const": "fanOut" } }, "required": ["expansion"] },
+          "then": { "required": ["occurrenceSelector"] }
+        }
+      ]
+    },
+    "eventInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["none", "calendarFieldUrl", "fixedUrl"]
+        },
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "urlTemplate": {
+          "type": "string",
+          "pattern": "^https?://",
+          "description": "Absolute HTTP(S) template; substitutes calendar fields such as {{eventUrl}}."
+        }
+      }
+    },
+    "eventLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sameHostOnly", "maxRequestsPerRun"],
+      "properties": {
+        "sameHostOnly": {
+          "type": "boolean",
+          "default": true
+        },
+        "maxRequestsPerRun": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "requestTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        }
+      }
+    },
+    "fetchConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST"]
+        },
+        "jsonBody": {
+          "type": "object",
+          "description": "Literal JSON object for generic Json calendar POST only. Runtime limits compact UTF-8 JSON to 16384 bytes, depth 8 (object root is depth 1), and 1024 nodes including containers/nulls. No interpolation or dynamic date discovery. Never include credentials."
+        },
+        "authentication": {
+          "$ref": "#/$defs/authenticationConfig"
+        },
+        "requestHeaders": {
+          "type": "object",
+          "maxProperties": 50,
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9-]+$"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "pagination": {
+          "type": "object"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["jsonBody"] },
+          "then": {
+            "required": ["method"],
+            "properties": { "method": { "const": "POST" } }
+          }
+        }
+      ]
+    },
+    "authenticationConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": ["string", "integer"],
+          "enum": ["None", "ApiKey", "Bearer", "Basic", 0, 1, 2, 3]
+        },
+        "headerName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "secret": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "validationRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minEventsPerFetch": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum parsed occurrences with title/location before freshness filtering, not minimum upcoming events. Enforced in stored-schema tests and runtime."
+        },
+        "maxEventsPerFetch": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "requiredFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}
