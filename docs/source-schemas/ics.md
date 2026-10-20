@@ -10,6 +10,15 @@ disclaimer. DATE DTSTART without an end is all-day to the next source-local
 midnight (DST-aware). Published DTEND remains exclusive and DURATION wins over
 the default. Missing/invalid DTSTART is a failure, never publication/current time.
 
+Local `TZID`/`X-WR-TIMEZONE` DATE-TIME values follow RFC 5545 section 3.3.5:
+a local time that occurs twice (daylight to standard) means its **first**
+occurrence, and a local time that does not occur (standard to daylight) uses the
+UTC offset **before** the gap. For example, `TZID=America/New_York:20071104T013000`
+is 01:30 EDT and `TZID=America/New_York:20070311T023000` is 03:30 EDT. These
+values stay timed (never all-day) and are not skipped; `Z` UTC values are kept
+exactly. The same rules apply to DTEND, DURATION day arithmetic and DATE
+day boundaries. Other formats have no such standard and still fail instead.
+
 ## ⚠️ ONLY Valid Format For ICS
 
 The `Ics` source schema submission to Wheneber **has exactly this structure and no other**:

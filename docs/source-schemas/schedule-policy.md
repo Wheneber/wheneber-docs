@@ -31,8 +31,11 @@ disclaimer. An explicitly published midnight timestamp is a clock, not date-only
   re-inspected to guess provenance.
 - Local midnight conversion uses the source timezone, not `startUtc + 24h`.
   Pacific 2026-03-08 is 23 hours and 2026-11-01 is 25 hours. Unknown configured
-  timezones and ambiguous/nonexistent local clocks fail. Offset-bearing timed
-  timestamps retain their absolute instant.
+  timezones fail. Ambiguous/nonexistent local clocks fail for every format
+  except ICS, whose RFC 5545 section 3.3.5 rule is applied instead: a repeated
+  local time is its first occurrence and a skipped local time uses the UTC
+  offset before the gap (see [ICS](ics.md)). Offset-bearing timed timestamps
+  retain their absolute instant.
 - Generic parsers use UTC when no source zone is supplied, as before. Configure
   the actual publisher zone for local/date-only schedules. ICS honors DTSTART/
   DTEND `TZID` and calendar `X-WR-TIMEZONE`; floating ICS uses that calendar
